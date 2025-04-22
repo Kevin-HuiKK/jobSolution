@@ -1,0 +1,15 @@
+{{ _('Dear') }} {{ user.name }},
+
+{{ _('Thank you for your interest in the position of') }} "{{ job.title }}" {{ _('and for taking the time to apply.') }}
+
+{{ _('After careful consideration, we regret to inform you that we have decided to move forward with other candidates whose qualifications more closely match our current needs.') }}
+
+{{ _('We encourage you to apply for future positions that match your skills and experience.') }}
+
+{{ _('We wish you the best in your job search and future endeavors.') }}
+
+{{ _('Best regards,') }}
+{{ _('HR Team') }}
+
+--
+{{ _('This is an automated email, please do not reply.') }} 

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ _('My Applications') }}</h1>
+            {% if applications %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>{{ _('Job Title') }}</th>
+                                <th>{{ _('Location') }}</th>
+                                <th>{{ _('Applied Date') }}</th>
+                                <th>{{ _('Status') }}</th>
+                                <th>{{ _('Actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in applications %}
+                                <tr>
+                                    <td>
+                                        {% if session.get('language') == 'zh' and application.job.title_zh %}
+                                            {{ application.job.title_zh }}
+                                        {% else %}
+                                            {{ application.job.title }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ application.job.location }}</td>
+                                    <td>{{ application.applied_at.strftime('%Y-%m-%d') }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ {
+                                            'pending': 'warning',
+                                            'accepted': 'success',
+                                            'rejected': 'danger'
+                                        }[application.status] }}">
+                                            {{ _(application.status|title) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('main.job', id=application.job.id) }}" 
+                                           class="btn btn-sm btn-primary">
+                                            {{ _('View Job') }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    {{ _('You have not applied for any jobs yet.') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %} 

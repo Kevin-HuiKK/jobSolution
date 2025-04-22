@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">
+                        {% if session.get('language') == 'zh' and job.title_zh %}
+                            {{ job.title_zh }}
+                        {% else %}
+                            {{ job.title }}
+                        {% endif %}
+                    </h1>
+                    <h6 class="card-subtitle mb-3 text-muted">{{ job.location }}</h6>
+                    
+                    <div class="mb-4">
+                        <h4>{{ _('Job Description') }}</h4>
+                        <p class="card-text">
+                            {% if session.get('language') == 'zh' and job.description_zh %}
+                                {{ job.description_zh|nl2br }}
+                            {% else %}
+                                {{ job.description|nl2br }}
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    {% if current_user.is_authenticated %}
+                        {% set has_applied = current_user.applications.filter_by(job_id=job.id).first() %}
+                        {% if has_applied %}
+                            <div class="alert alert-info">
+                                {{ _('You have already applied for this position.') }}
+                                {{ _('Application Status') }}: {{ _(has_applied.status|title) }}
+                            </div>
+                        {% else %}
+                            <form action="{{ url_for('main.apply_job', job_id=job.id) }}" method="post">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    {{ _('Apply Now') }}
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <div class="alert alert-warning">
+                            {{ _('Please') }} <a href="{{ url_for('auth.login') }}">{{ _('login') }}</a> 
+                            {{ _('to apply for this position.') }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-muted">
+                    {{ _('Posted on') }}: {{ job.created_at.strftime('%Y-%m-%d') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

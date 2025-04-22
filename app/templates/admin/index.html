@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>{{ _('Job Management') }}</h1>
+                <a href="{{ url_for('admin.create_job') }}" class="btn btn-primary">
+                    {{ _('Create New Job') }}
+                </a>
+            </div>
+
+            {% if jobs %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>{{ _('Job Title') }}</th>
+                                <th>{{ _('Location') }}</th>
+                                <th>{{ _('Posted Date') }}</th>
+                                <th>{{ _('Status') }}</th>
+                                <th>{{ _('Applications') }}</th>
+                                <th>{{ _('Actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in jobs %}
+                                <tr>
+                                    <td>
+                                        {% if session.get('language') == 'zh' and job.title_zh %}
+                                            {{ job.title_zh }}
+                                        {% else %}
+                                            {{ job.title }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ job.location }}</td>
+                                    <td>{{ job.created_at.strftime('%Y-%m-%d') }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if job.is_active else 'secondary' }}">
+                                            {{ _('Active') if job.is_active else _('Inactive') }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('admin.view_applications', job_id=job.id) }}" 
+                                           class="btn btn-sm btn-info">
+                                            {{ _('View') }} ({{ job.applications.count() }})
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="{{ url_for('admin.edit_job', id=job.id) }}" 
+                                               class="btn btn-sm btn-primary">
+                                                {{ _('Edit') }}
+                                            </a>
+                                            <a href="{{ url_for('admin.toggle_job', id=job.id) }}" 
+                                               class="btn btn-sm btn-{{ 'warning' if job.is_active else 'success' }}">
+                                                {{ _('Deactivate') if job.is_active else _('Activate') }}
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    {{ _('No jobs have been created yet.') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %} 

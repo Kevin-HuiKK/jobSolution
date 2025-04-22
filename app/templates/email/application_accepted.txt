@@ -1,0 +1,18 @@
+{{ _('Dear') }} {{ user.name }},
+
+{{ _('Congratulations! Your application for the position of') }} "{{ job.title }}" {{ _('has been accepted.') }}
+
+{{ _('Job Details:') }}
+{{ _('Position:') }} {{ job.title }}
+{{ _('Location:') }} {{ job.location }}
+
+{{ _('Next Steps:') }}
+{{ _('Our HR team will contact you shortly to discuss the next steps in the hiring process.') }}
+
+{{ _('If you have any questions, please don\'t hesitate to contact us.') }}
+
+{{ _('Best regards,') }}
+{{ _('HR Team') }}
+
+--
+{{ _('This is an automated email, please do not reply.') }} 

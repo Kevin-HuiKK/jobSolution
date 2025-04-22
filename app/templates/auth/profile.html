@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="h3 mb-0">{{ _('Edit Profile') }}</h1>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <h4 class="mb-3">{{ _('Personal Information') }}</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                {{ form.name.label(class="form-label") }}
+                                <span class="text-danger">*</span>
+                                {{ form.name(class="form-control") }}
+                                {% for error in form.name.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.gender.label(class="form-label") }}
+                                <span class="text-danger">*</span>
+                                {{ form.gender(class="form-select") }}
+                                {% for error in form.gender.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.age.label(class="form-label") }}
+                                <span class="text-danger">*</span>
+                                {{ form.age(class="form-control") }}
+                                {% for error in form.age.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.phone.label(class="form-label") }}
+                                <span class="text-danger">*</span>
+                                {{ form.phone(class="form-control") }}
+                                {% for error in form.phone.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.suburb.label(class="form-label") }}
+                                <span class="text-danger">*</span>
+                                {{ form.suburb(class="form-control") }}
+                                {% for error in form.suburb.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">{{ _('Visa Information') }}</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.visa_type.label(class="form-label") }}
+                                <span class="text-danger">*</span>
+                                {{ form.visa_type(class="form-control") }}
+                                {% for error in form.visa_type.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.visa_expiry.label(class="form-label") }}
+                                <span class="text-danger">*</span>
+                                {{ form.visa_expiry(class="form-control", type="date") }}
+                                {% for error in form.visa_expiry.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">{{ _('Work Information') }}</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.can_drive(class="form-check-input") }}
+                                    {{ form.can_drive.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.has_car(class="form-check-input") }}
+                                    {{ form.has_car.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.available_start_date.label(class="form-label") }}
+                                <span class="text-danger">*</span>
+                                {{ form.available_start_date(class="form-control", type="date") }}
+                                {% for error in form.available_start_date.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">{{ _('Skills') }}</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.english_speaking(class="form-check-input") }}
+                                    {{ form.english_speaking.label(class="form-check-label") }}
+                                </div>
+                                <div class="form-check">
+                                    {{ form.english_writing(class="form-check-input") }}
+                                    {{ form.english_writing.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.forklift_license(class="form-check-input") }}
+                                    {{ form.forklift_license.label(class="form-check-label") }}
+                                </div>
+                                {{ form.forklift_experience_years.label(class="form-label") }}
+                                {{ form.forklift_experience_years(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">{{ _('Work Experience') }}</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.warehouse_experience(class="form-check-input") }}
+                                    {{ form.warehouse_experience.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.last_warehouse_company.label(class="form-label") }}
+                                {{ form.last_warehouse_company(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary btn-lg") }}
+                            <a href="{{ url_for('auth.change_password') }}" class="btn btn-secondary btn-lg">
+                                {{ _('Change Password') }}
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 
