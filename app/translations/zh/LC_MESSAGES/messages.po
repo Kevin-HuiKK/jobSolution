@@ -1,0 +1,84 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+"MIME-Version: 1.0\n"
+
+msgid "Job Portal"
+msgstr "仓储招聘平台"
+
+msgid "Find Your Perfect Warehouse Job"
+msgstr "找到理想的仓储工作"
+
+msgid "Easy Application Process"
+msgstr "简单的申请流程"
+
+msgid "Simple registration and one-click job applications make finding work easier than ever."
+msgstr "简单的注册和一键申请工作，让找工作变得前所未有的容易。"
+
+msgid "Diverse Opportunities"
+msgstr "多样化的机会"
+
+msgid "From forklift operators to general warehouse staff, find the role that matches your skills."
+msgstr "从叉车操作员到普通仓库员工，找到与您技能相匹配的职位。"
+
+msgid "Flexible Schedules"
+msgstr "灵活的工作时间"
+
+msgid "Full-time, part-time, and casual positions available to suit your availability."
+msgstr "提供全职、兼职和临时职位，满足您的时间安排。"
+
+msgid "Local Jobs"
+msgstr "本地工作"
+
+msgid "Find warehouse work opportunities in your local area."
+msgstr "在您所在地区寻找仓库工作机会。"
+
+msgid "Register Now"
+msgstr "立即注册"
+
+msgid "Available Positions"
+msgstr "可用职位"
+
+msgid "Posted on"
+msgstr "发布于"
+
+msgid "View Details"
+msgstr "查看详情"
+
+msgid "No jobs available at the moment."
+msgstr "目前没有可用的职位。"
+
+msgid "Home"
+msgstr "首页"
+
+msgid "My Applications"
+msgstr "我的申请"
+
+msgid "Admin Panel"
+msgstr "管理面板"
+
+msgid "Language"
+msgstr "语言"
+
+msgid "Edit Profile"
+msgstr "编辑资料"
+
+msgid "Change Password"
+msgstr "修改密码"
+
+msgid "Logout"
+msgstr "退出登录"
+
+msgid "Login"
+msgstr "登录"
+
+msgid "Register"
+msgstr "注册"
+
+msgid "You have already applied for this job."
+msgstr "您已经申请过这个职位了。"
+
+msgid "Your application has been submitted."
+msgstr "您的申请已提交。" 

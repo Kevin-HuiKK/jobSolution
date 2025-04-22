@@ -39,7 +39,8 @@ def my_applications():
     return render_template('main/my_applications.html', 
         title=_('My Applications'), applications=applications)
 
-@bp.route('/set_language/<language>')
-def set_language(language):
-    session['language'] = language
+@bp.route('/set_language/<lang>')
+def set_language(lang):
+    if lang in ['en', 'zh']:
+        session['language'] = lang
     return redirect(request.referrer or url_for('main.index')) 
