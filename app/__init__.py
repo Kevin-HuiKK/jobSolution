@@ -15,9 +15,9 @@ def nl2br(value):
     return value.replace('\n', '<br>') if value else ''
 
 def get_locale():
-    if 'language' in session:
-        return session['language']
-    return request.accept_languages.best_match(current_app.config['LANGUAGES'])
+    if 'language' not in session:
+        session['language'] = 'en'
+    return session['language']
 
 def create_app(config_class=Config):
     app = Flask(__name__)

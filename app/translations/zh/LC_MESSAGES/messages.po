@@ -81,4 +81,145 @@ msgid "You have already applied for this job."
 msgstr "您已经申请过这个职位了。"
 
 msgid "Your application has been submitted."
-msgstr "您的申请已提交。" 
+msgstr "您的申请已提交。"
+
+msgid "Job Description"
+msgstr "职位描述"
+
+msgid "You have already applied for this position."
+msgstr "您已经申请过这个职位。"
+
+msgid "Application Status"
+msgstr "申请状态"
+
+msgid "Apply Now"
+msgstr "立即申请"
+
+msgid "Please"
+msgstr "请"
+
+msgid "login"
+msgstr "登录"
+
+msgid "to apply for this position."
+msgstr "以申请此职位。"
+
+msgid "Pending"
+msgstr "待处理"
+
+msgid "Accepted"
+msgstr "已接受"
+
+msgid "Rejected"
+msgstr "已拒绝"
+
+msgid "Admin Settings"
+msgstr "管理员设置"
+
+msgid "Email Settings"
+msgstr "邮箱设置"
+
+msgid "Admin Email"
+msgstr "管理员邮箱"
+
+msgid "Current Password"
+msgstr "当前密码"
+
+msgid "New Password"
+msgstr "新密码"
+
+msgid "Confirm New Password"
+msgstr "确认新密码"
+
+msgid "App ID Settings"
+msgstr "应用ID设置"
+
+msgid "App ID"
+msgstr "应用ID"
+
+msgid "Save Changes"
+msgstr "保存更改"
+
+msgid "Email Templates"
+msgstr "邮件模板"
+
+msgid "Application Accepted Template"
+msgstr "申请通过模板"
+
+msgid "Application Rejected Template"
+msgstr "申请拒绝模板"
+
+msgid "Current password is incorrect"
+msgstr "当前密码不正确"
+
+msgid "New passwords do not match"
+msgstr "新密码不匹配"
+
+msgid "Settings updated successfully"
+msgstr "设置更新成功"
+
+msgid "Application accepted and notification sent."
+msgstr "申请已通过并已发送通知。"
+
+msgid "Application rejected and notification sent."
+msgstr "申请已拒绝并已发送通知。"
+
+msgid "Contact"
+msgstr "联系方式"
+
+msgid "Phone"
+msgstr "电话"
+
+msgid "English Template"
+msgstr "英文模板"
+
+msgid "Chinese Template"
+msgstr "中文模板"
+
+msgid "Available variables"
+msgstr "可用变量"
+
+msgid "Applicant Name"
+msgstr "申请人姓名"
+
+msgid "Job Title"
+msgstr "职位名称"
+
+msgid "Company Name"
+msgstr "公司名称"
+
+msgid "Job Management"
+msgstr "职位管理"
+
+msgid "System Settings"
+msgstr "系统设置"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Back to Admin"
+msgstr "返回管理面板"
+
+msgid "Create New Job"
+msgstr "创建新职位"
+
+msgid "Active"
+msgstr "活跃"
+
+msgid "Inactive"
+msgstr "未激活"
+
+msgid "View"
+msgstr "查看"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "Deactivate"
+msgstr "停用"
+
+msgid "Activate"
+msgstr "启用"
+
+msgid "No jobs have been created yet."
+msgstr "还没有创建任何职位。" 
