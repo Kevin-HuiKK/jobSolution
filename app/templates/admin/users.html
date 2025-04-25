@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">{{ _('Users Management') }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>{{ _('Username') }}</th>
+                                    <th>{{ _('Email') }}</th>
+                                    <th>{{ _('Role') }}</th>
+                                    <th>{{ _('Applications') }}</th>
+                                    <th>{{ _('Resume') }}</th>
+                                    <th>{{ _('Actions') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                <tr>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'primary' if user.is_admin else 'secondary' }}">
+                                            {{ _('Admin') if user.is_admin else _('User') }}
+                                        </span>
+                                    </td>
+                                    <td>{{ user.applications.count() }}</td>
+                                    <td>
+                                        {% if user.resume_path %}
+                                            <i class="fas fa-check text-success"></i>
+                                        {% else %}
+                                            <i class="fas fa-times text-danger"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('admin.view_user', id=user.id) }}" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i> {{ _('View') }}
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

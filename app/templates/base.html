@@ -1,126 +1,255 @@
 <!DOCTYPE html>
-<html lang="{{ session.get('language', 'en') }}">
+<html lang="{{ g.locale }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} - {{ _('Job Portal') }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }} - {{ _('Warehouse Jobs') }}</title>
+    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #6c757d;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #333;
+        }
+        
+        .navbar {
+            padding: 1rem 0;
+            background-color: white !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            color: #333 !important;
+            padding: 0.5rem 1rem !important;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+        
+        .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background-color: #004494;
+            border-color: #004494;
+            transform: translateY(-1px);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+        
+        .footer {
+            background-color: #f8f9fa;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .alert {
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 8px;
+        }
+        
+        .form-control {
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0,86,179,.25);
+        }
+    </style>
+    {% block styles %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">{{ _('Job Portal') }}</a>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <i class="fas fa-warehouse me-2"></i>{{ _('Warehouse Jobs') }}
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.index') }}">{{ _('Home') }}</a>
+                        <a class="nav-link {{ 'active' if request.endpoint == 'main.index' }}" 
+                           href="{{ url_for('main.index') }}">{{ _('Home') }}</a>
                     </li>
-                    {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('main.my_applications') }}">
-                                {{ _('My Applications') }}
-                            </a>
-                        </li>
-                        {% if current_user.is_admin %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('admin.index') }}">
-                                    {{ _('Admin Panel') }}
-                                </a>
-                            </li>
-                        {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ 'active' if request.endpoint == 'main.jobs' }}" 
+                           href="{{ url_for('main.jobs') }}">{{ _('Jobs') }}</a>
+                    </li>
+                    {% if current_user.is_authenticated and current_user.is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ 'active' if request.endpoint.startswith('admin.') }}" 
+                           href="{{ url_for('admin.index') }}">{{ _('Admin Panel') }}</a>
+                    </li>
                     {% endif %}
                 </ul>
-                <ul class="navbar-nav">
+                
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <!-- Language Selector -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" 
-                           data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="fas fa-globe me-1"></i>
                             {{ _('Language') }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ url_for('main.set_language', lang='en') }}">English</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('main.set_language', lang='zh') }}">中文</a></li>
+                        </ul>
+                    </li>
+                    
+                    {% if current_user.is_authenticated %}
+                    <!-- User Menu -->
+                    <li class="nav-item dropdown ms-3">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>
+                            {{ current_user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item" href="{{ url_for('main.set_language', lang='en') }}">
-                                    English
+                                <a class="dropdown-item" href="{{ url_for('auth.edit_profile') }}">
+                                    <i class="fas fa-user me-2"></i>{{ _('Edit Profile') }}
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ url_for('main.set_language', lang='zh') }}">
-                                    中文
+                                <a class="dropdown-item" href="{{ url_for('auth.change_password') }}">
+                                    <i class="fas fa-key me-2"></i>{{ _('Change Password') }}
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('main.my_applications') }}">
+                                    <i class="fas fa-briefcase me-2"></i>{{ _('My Applications') }}
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>{{ _('Logout') }}
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    {% if current_user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
-                               data-bs-toggle="dropdown">
-                                {{ current_user.username }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" href="{{ url_for('auth.profile') }}">
-                                        <i class="fas fa-user-edit"></i> {{ _('Edit Profile') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ url_for('auth.change_password') }}">
-                                        <i class="fas fa-key"></i> {{ _('Change Password') }}
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ url_for('auth.logout') }}">
-                                        <i class="fas fa-sign-out-alt"></i> {{ _('Logout') }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('auth.register') }}">{{ _('Register') }}</a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-primary" href="{{ url_for('auth.register') }}">
+                            {{ _('Register') }}
+                        </a>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        {% with messages = get_flashed_messages() %}
+    <!-- Main Content -->
+    <main class="pt-5 mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                {% endfor %}
+                <div class="container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
         {% endwith %}
-
+        
         {% block content %}{% endblock %}
-    </div>
+    </main>
 
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container text-center">
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
             <div class="row">
-                <div class="col">
-                    <p class="mb-0 text-muted">
-                        <i class="fas fa-envelope"></i> {{ _('Contact') }}: contact@jobportal.com
-                        &nbsp;|&nbsp;
-                        <i class="fas fa-phone"></i> {{ _('Phone') }}: +61 123 456 789
-                    </p>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">{{ _('About Us') }}</h5>
+                    <p class="text-muted">{{ _('We connect skilled workers with Australia\'s leading logistics companies, helping both employers and job seekers find their perfect match.') }}</p>
                 </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">{{ _('Quick Links') }}</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('main.jobs') }}" class="text-muted text-decoration-none">{{ _('Browse Jobs') }}</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">{{ _('How It Works') }}</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">{{ _('FAQs') }}</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">{{ _('Contact Us') }}</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">{{ _('Connect With Us') }}</h5>
+                    <div class="social-links">
+                        <a href="#" class="text-muted text-decoration-none me-3"><i class="fab fa-facebook-square fa-2x"></i></a>
+                        <a href="#" class="text-muted text-decoration-none me-3"><i class="fab fa-linkedin fa-2x"></i></a>
+                        <a href="#" class="text-muted text-decoration-none"><i class="fab fa-twitter-square fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-muted">
+                <small>&copy; {{ moment().format('YYYY') }} {{ _('Warehouse Jobs. All rights reserved.') }}</small>
             </div>
         </div>
     </footer>
 
+    <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    {{ moment.include_moment() }}
+    {{ moment.lang(g.locale) }}
+    {% block scripts %}{% endblock %}
 </body>
 </html> 

@@ -1,96 +1,96 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="mb-4">
-                <h1>{{ _('Applications for') }}: {{ job.title }}</h1>
-                <p class="text-muted">{{ job.location }} - {{ _('Posted on') }} {{ job.created_at.strftime('%Y-%m-%d') }}</p>
-            </div>
-
-            {% if applications %}
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>{{ _('Basic Info') }}</th>
-                                <th>{{ _('Contact & Location') }}</th>
-                                <th>{{ _('Visa & Availability') }}</th>
-                                <th>{{ _('Skills & Experience') }}</th>
-                                <th>{{ _('Status') }}</th>
-                                <th>{{ _('Actions') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for application in applications %}
-                                <tr>
-                                    <td>
-                                        <strong>{{ application.applicant.name }}</strong><br>
-                                        {{ _('Age') }}: {{ application.applicant.age }}<br>
-                                        {{ _('Gender') }}: {{ _(application.applicant.gender|title) }}<br>
-                                        {{ _('Applied on') }}: {{ application.applied_at.strftime('%Y-%m-%d') }}
-                                    </td>
-                                    <td>
-                                        {{ _('Phone') }}: {{ application.applicant.phone }}<br>
-                                        {{ _('Email') }}: {{ application.applicant.email }}<br>
-                                        {{ _('Suburb') }}: {{ application.applicant.suburb }}
-                                    </td>
-                                    <td>
-                                        {{ _('Visa Type') }}: {{ application.applicant.visa_type }}<br>
-                                        {{ _('Visa Expiry') }}: {{ application.applicant.visa_expiry.strftime('%Y-%m-%d') }}<br>
-                                        {{ _('Available From') }}: {{ application.applicant.available_start_date.strftime('%Y-%m-%d') }}
-                                    </td>
-                                    <td>
-                                        {% if application.applicant.english_speaking %}
-                                            <span class="badge bg-success">{{ _('English Speaking') }}</span>
-                                        {% endif %}
-                                        {% if application.applicant.english_writing %}
-                                            <span class="badge bg-success">{{ _('English Writing') }}</span>
-                                        {% endif %}
-                                        {% if application.applicant.forklift_license %}
-                                            <span class="badge bg-info">{{ _('Forklift License') }}</span>
-                                            <br>{{ _('Experience') }}: {{ application.applicant.forklift_experience_years }} {{ _('years') }}
-                                        {% endif %}
-                                        {% if application.applicant.warehouse_experience %}
-                                            <span class="badge bg-primary">{{ _('Warehouse Experience') }}</span>
-                                            <br>{{ _('Last Company') }}: {{ application.applicant.last_warehouse_company }}
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-{{ 'success' if application.status == 'accepted' else 'danger' if application.status == 'rejected' else 'warning' }}">
-                                            {{ _(application.status|title) }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        {% if application.status == 'pending' %}
-                                            <div class="btn-group">
-                                                <a href="{{ url_for('admin.accept_application', id=application.id) }}" 
-                                                   class="btn btn-success btn-sm">
-                                                    {{ _('Accept') }}
-                                                </a>
-                                                <a href="{{ url_for('admin.reject_application', id=application.id) }}" 
-                                                   class="btn btn-danger btn-sm">
-                                                    {{ _('Reject') }}
-                                                </a>
-                                            </div>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% else %}
-                <div class="alert alert-info">
-                    {{ _('No applications received yet.') }}
-                </div>
-            {% endif %}
-
-            <div class="mt-4">
-                <a href="{{ url_for('admin.index') }}" class="btn btn-secondary">
-                    {{ _('Back to Job Management') }}
-                </a>
+<div class="container">
+    <h1 class="mb-4">{{ _('Applications Management') }}</h1>
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>{{ _('Applicant') }}</th>
+                            <th>{{ _('Job Title') }}</th>
+                            <th>{{ _('Applied At') }}</th>
+                            <th>{{ _('Status') }}</th>
+                            <th>{{ _('Resume') }}</th>
+                            <th>{{ _('Actions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for application in applications %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('admin.view_user', id=application.applicant.id) }}" class="text-decoration-none">
+                                    {{ application.applicant.username }}
+                                </a>
+                            </td>
+                            <td>
+                                {% if g.locale == 'zh' and application.job.title_zh %}
+                                    {{ application.job.title_zh }}
+                                {% else %}
+                                    {{ application.job.title }}
+                                {% endif %}
+                            </td>
+                            <td>{{ moment(application.applied_at).format('L') }}</td>
+                            <td>
+                                {% if application.status == 'pending' %}
+                                    <span class="badge bg-warning">{{ _('Pending') }}</span>
+                                {% elif application.status == 'accepted' %}
+                                    <span class="badge bg-success">{{ _('Accepted') }}</span>
+                                {% elif application.status == 'rejected' %}
+                                    <span class="badge bg-danger">{{ _('Rejected') }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if application.resume_path %}
+                                    <a href="{{ url_for('admin.download_resume', id=application.id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-download"></i> {{ _('Download') }}
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">{{ _('No resume') }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if application.status == 'pending' %}
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-success" onclick="confirmAccept({{ application.id }})">
+                                            <i class="fas fa-check"></i> {{ _('Accept') }}
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="confirmReject({{ application.id }})">
+                                            <i class="fas fa-times"></i> {{ _('Reject') }}
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function confirmAccept(id) {
+    if (confirm("{{ _('Are you sure you want to accept this application?') }}")) {
+        const sendEmail = confirm("{{ _('Do you want to send an email notification to the applicant?') }}");
+        window.location.href = `{{ url_for('admin.accept_application', id=0) }}`.replace('0', id) + 
+            (sendEmail ? '?send_email=1' : '');
+    }
+}
+
+function confirmReject(id) {
+    if (confirm("{{ _('Are you sure you want to reject this application?') }}")) {
+        const sendEmail = confirm("{{ _('Do you want to send an email notification to the applicant?') }}");
+        window.location.href = `{{ url_for('admin.reject_application', id=0) }}`.replace('0', id) + 
+            (sendEmail ? '?send_email=1' : '');
+    }
+}
+</script>
 {% endblock %} 

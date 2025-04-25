@@ -1,147 +1,237 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="row">
-        <!-- 网站宣传部分 -->
-        <div class="col-md-6 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h2 class="card-title text-primary mb-4">
-                        {% if session.get('language') == 'zh' %}
-                            {{ _('Find Your Perfect Warehouse Job') }}
-                        {% else %}
-                            {{ _('Find Your Perfect Warehouse Job') }}
-                        {% endif %}
-                    </h2>
-                    
-                    <div class="feature-box mb-4">
-                        <h4><i class="fas fa-check-circle text-success"></i> {{ _('Easy Application Process') }}</h4>
-                        <p>{{ _('Simple registration and one-click job applications make finding work easier than ever.') }}</p>
-                    </div>
-                    
-                    <div class="feature-box mb-4">
-                        <h4><i class="fas fa-users text-info"></i> {{ _('Diverse Opportunities') }}</h4>
-                        <p>{{ _('From forklift operators to general warehouse staff, find the role that matches your skills.') }}</p>
-                    </div>
-                    
-                    <div class="feature-box mb-4">
-                        <h4><i class="fas fa-clock text-warning"></i> {{ _('Flexible Schedules') }}</h4>
-                        <p>{{ _('Full-time, part-time, and casual positions available to suit your availability.') }}</p>
-                    </div>
-                    
-                    <div class="feature-box mb-4">
-                        <h4><i class="fas fa-map-marker-alt text-danger"></i> {{ _('Local Jobs') }}</h4>
-                        <p>{{ _('Find warehouse work opportunities in your local area.') }}</p>
-                    </div>
+<!-- Hero Section -->
+<div class="hero-section position-relative mb-5">
+    <div class="hero-image position-absolute w-100 h-100" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/static/images/warehouse-hero.jpg') no-repeat center center; background-size: cover;"></div>
+    <div class="container position-relative py-5">
+        <div class="row min-vh-50 align-items-center py-5">
+            <div class="col-lg-8 text-white">
+                <h1 class="display-4 fw-bold mb-4">{{ _('Find Your Next Warehouse Career') }}</h1>
+                <p class="lead mb-4">{{ _('We connect skilled workers with Australia\'s leading logistics companies') }}</p>
+                <a href="{{ url_for('main.jobs') }}" class="btn btn-primary btn-lg px-4 me-3">
+                    <i class="fas fa-search me-2"></i>{{ _('Browse Jobs') }}
+                </a>
+                {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg px-4">
+                    <i class="fas fa-user-plus me-2"></i>{{ _('Register Now') }}
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 
-                    {% if not current_user.is_authenticated %}
-                        <div class="text-center mt-4">
-                            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg shadow-sm">
-                                {{ _('Register Now') }}
-                            </a>
+<!-- Featured Jobs Section -->
+<div class="container mb-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="section-title fw-bold">{{ _('Latest Job Opportunities') }}</h2>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        {% for job in jobs %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 job-card shadow-sm hover-shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h5 class="card-title mb-1">
+                                {% if g.locale == 'zh' and job.title_zh %}
+                                    {{ job.title_zh }}
+                                {% else %}
+                                    {{ job.title }}
+                                {% endif %}
+                            </h5>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-map-marker-alt me-2"></i>{{ job.location }}
+                            </p>
                         </div>
-                    {% endif %}
+                        {% if (job.created_at.date() - now.date()).days <= 7 %}
+                            <span class="badge bg-primary">{{ _('New') }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <p class="card-text text-truncate mb-3">
+                        {% if g.locale == 'zh' and job.description_zh %}
+                            {{ job.description_zh }}
+                        {% else %}
+                            {{ job.description }}
+                        {% endif %}
+                    </p>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="job-meta small text-muted">
+                            <span class="me-3">
+                                <i class="fas fa-users me-1"></i>
+                                {{ job.headcount if job.headcount != 'any' else _('Multiple') }}
+                            </span>
+                            <span>
+                                <i class="fas fa-clock me-1"></i>
+                                {{ moment(job.created_at).fromNow() }}
+                            </span>
+                        </div>
+                        <a href="{{ url_for('main.job', id=job.id) }}" class="btn btn-outline-primary">
+                            {{ _('View Details') }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
+        {% endfor %}
+    </div>
+    
+    {% if jobs|length == 0 %}
+    <div class="text-center py-5">
+        <div class="mb-3">
+            <i class="fas fa-briefcase fa-3x text-muted"></i>
+        </div>
+        <h3>{{ _('No jobs available at the moment') }}</h3>
+        <p class="text-muted">{{ _('Please check back later for new opportunities') }}</p>
+    </div>
+    {% endif %}
+    
+    {% if jobs|length >= 6 %}
+    <div class="text-center mt-5">
+        <a href="{{ url_for('main.jobs') }}" class="btn btn-lg btn-primary px-5">
+            {{ _('View All Jobs') }} <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+    </div>
+    {% endif %}
+</div>
 
-        <!-- 工作列表部分 -->
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">{{ _('Available Positions') }}</h3>
-                </div>
-                <div class="card-body">
-                    {% if jobs %}
-                        {% for job in jobs %}
-                            <div class="job-card mb-3 p-3 border rounded hover-shadow">
-                                <h5 class="job-title mb-2">
-                                    {% if session.get('language') == 'zh' and job.title_zh %}
-                                        {{ job.title_zh }}
-                                    {% else %}
-                                        {{ job.title }}
-                                    {% endif %}
-                                </h5>
-                                <p class="location mb-2">
-                                    <i class="fas fa-map-marker-alt text-secondary"></i> {{ job.location }}
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">
-                                        {{ _('Posted on') }}: {{ job.created_at.strftime('%Y-%m-%d') }}
-                                    </small>
-                                    <a href="{{ url_for('main.job', id=job.id) }}" class="btn btn-outline-primary btn-sm">
-                                        {{ _('View Details') }}
-                                    </a>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="alert alert-info">
-                            {{ _('No jobs available at the moment.') }}
+<!-- Industry Categories -->
+<div class="bg-light py-5 mb-5">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col text-center">
+                <h2 class="section-title fw-bold mb-3">{{ _('Our Focus Areas') }}</h2>
+                <p class="text-muted">{{ _('We specialize in connecting talent with opportunities in these key industries') }}</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 bg-white shadow-sm hover-shadow h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-warehouse fa-3x text-primary"></i>
                         </div>
+                        <h4 class="card-title">{{ _('Warehouse Operations') }}</h4>
+                        <p class="card-text text-muted">{{ _('Pickers, Packers, Forklift Operators, and more') }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card border-0 bg-white shadow-sm hover-shadow h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-truck fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="card-title">{{ _('Logistics') }}</h4>
+                        <p class="card-text text-muted">{{ _('Transport, Distribution, and Supply Chain roles') }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card border-0 bg-white shadow-sm hover-shadow h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-industry fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="card-title">{{ _('Manufacturing') }}</h4>
+                        <p class="card-text text-muted">{{ _('Production, Assembly, and Quality Control positions') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-lg-10 offset-lg-1">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body p-5 text-center">
+                    <h3 class="mb-4">{{ _('Ready to Take the Next Step in Your Career?') }}</h3>
+                    <p class="lead mb-4">{{ _('Join our platform to access exclusive job opportunities and connect with top employers') }}</p>
+                    {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-lg btn-light">
+                        <i class="fas fa-user-plus me-2"></i>{{ _('Create Your Profile Now') }}
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('main.jobs') }}" class="btn btn-lg btn-light">
+                        <i class="fas fa-search me-2"></i>{{ _('Find Jobs') }}
+                    </a>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
+</div>
+{% endblock %}
 
-    {% block styles %}
-    <style>
-        .feature-box {
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #f8f9fa;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        
-        .feature-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-color: #007bff;
-        }
-        
-        .feature-box h4 {
-            color: #2c3e50;
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .feature-box p {
-            color: #6c757d;
-            margin-bottom: 0;
-            line-height: 1.6;
-        }
-        
-        .feature-box i {
-            margin-right: 10px;
-            font-size: 1.1em;
-        }
+{% block styles %}
+<style>
+.hero-section {
+    min-height: 500px;
+    overflow: hidden;
+}
 
-        .job-card {
-            transition: all 0.3s ease;
-            background: white;
-        }
+.hero-image {
+    z-index: -1;
+}
 
-        .job-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+.min-vh-50 {
+    min-height: 50vh;
+}
 
-        .hover-shadow:hover {
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+.hover-shadow {
+    transition: all 0.3s ease;
+}
 
-        .job-title {
-            color: #2c3e50;
-            font-weight: 600;
-        }
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
 
-        .location {
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-    </style>
-    {% endblock %}
+.job-card {
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.job-card:hover {
+    border-color: var(--bs-primary);
+}
+
+.icon-box {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.section-title {
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--bs-primary);
+}
+</style>
 {% endblock %} 

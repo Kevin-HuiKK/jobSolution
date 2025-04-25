@@ -10,7 +10,7 @@ from datetime import datetime
 @bp.route('/index')
 def index():
     jobs = Job.query.filter_by(is_active=True).order_by(Job.created_at.desc()).all()
-    return render_template('main/index.html', title=_('Home'), jobs=jobs)
+    return render_template('main/index.html', title=_('Home'), jobs=jobs, now=datetime.now())
 
 @bp.route('/job/<int:id>')
 def job(id):
@@ -43,4 +43,11 @@ def my_applications():
 def set_language(lang):
     if lang in ['en', 'zh']:
         session['language'] = lang
-    return redirect(request.referrer or url_for('main.index')) 
+    return redirect(request.referrer or url_for('main.index'))
+
+@bp.route('/jobs')
+def jobs():
+    page = request.args.get('page', 1, type=int)
+    jobs = Job.query.filter_by(is_active=True).order_by(Job.created_at.desc()).paginate(
+        page=page, per_page=9, error_out=False)
+    return render_template('jobs.html', title=_('Available Positions'), jobs=jobs) 

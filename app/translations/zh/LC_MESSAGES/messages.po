@@ -222,4 +222,25 @@ msgid "Activate"
 msgstr "启用"
 
 msgid "No jobs have been created yet."
-msgstr "还没有创建任何职位。" 
+msgstr "还没有创建任何职位。"
+
+msgid "Internal Server Error"
+msgstr "服务器内部错误"
+
+msgid "Sorry, something went wrong on our end. Please try again later."
+msgstr "抱歉，服务器出现了问题。请稍后再试。"
+
+msgid "Page Not Found"
+msgstr "页面未找到"
+
+msgid "The page you are looking for might have been removed or is temporarily unavailable."
+msgstr "您访问的页面可能已被删除或暂时不可用。"
+
+msgid "Access Forbidden"
+msgstr "访问被禁止"
+
+msgid "You do not have permission to access this page."
+msgstr "您没有权限访问此页面。"
+
+msgid "Return to Home"
+msgstr "返回首页" 

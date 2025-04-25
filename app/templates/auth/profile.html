@@ -1,151 +1,238 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="h3 mb-0">{{ _('Edit Profile') }}</h1>
+            <h1>{{ _('Edit Profile') }}</h1>
+            <form action="" method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                
+                <!-- 个人基本信息 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">{{ _('Personal Information') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control") }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control") }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.gender.label(class="form-label") }}
+                            {{ form.gender(class="form-select") }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.age.label(class="form-label") }}
+                            {{ form.age(class="form-control") }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.phone.label(class="form-label") }}
+                            {{ form.phone(class="form-control") }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.suburb.label(class="form-label") }}
+                            {{ form.suburb(class="form-control") }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.about_me.label(class="form-label") }}
+                            {{ form.about_me(class="form-control", rows=3) }}
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form action="" method="post" novalidate>
-                        {{ form.hidden_tag() }}
-                        
-                        <h4 class="mb-3">{{ _('Personal Information') }}</h4>
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                {{ form.name.label(class="form-label") }}
-                                <span class="text-danger">*</span>
-                                {{ form.name(class="form-control") }}
-                                {% for error in form.name.errors %}
-                                    <span class="text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            <div class="col-md-4">
-                                {{ form.gender.label(class="form-label") }}
-                                <span class="text-danger">*</span>
-                                {{ form.gender(class="form-select") }}
-                                {% for error in form.gender.errors %}
-                                    <span class="text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            <div class="col-md-4">
-                                {{ form.age.label(class="form-label") }}
-                                <span class="text-danger">*</span>
-                                {{ form.age(class="form-control") }}
-                                {% for error in form.age.errors %}
-                                    <span class="text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                {{ form.phone.label(class="form-label") }}
-                                <span class="text-danger">*</span>
-                                {{ form.phone(class="form-control") }}
-                                {% for error in form.phone.errors %}
-                                    <span class="text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ form.suburb.label(class="form-label") }}
-                                <span class="text-danger">*</span>
-                                {{ form.suburb(class="form-control") }}
-                                {% for error in form.suburb.errors %}
-                                    <span class="text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        </div>
 
-                        <h4 class="mb-3">{{ _('Visa Information') }}</h4>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                {{ form.visa_type.label(class="form-label") }}
-                                <span class="text-danger">*</span>
-                                {{ form.visa_type(class="form-control") }}
-                                {% for error in form.visa_type.errors %}
-                                    <span class="text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ form.visa_expiry.label(class="form-label") }}
-                                <span class="text-danger">*</span>
-                                {{ form.visa_expiry(class="form-control", type="date") }}
-                                {% for error in form.visa_expiry.errors %}
-                                    <span class="text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
+                <!-- 签证信息 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">{{ _('Visa Information') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group mb-3">
+                            {{ form.visa_type.label(class="form-label") }}
+                            {{ form.visa_type(class="form-control") }}
                         </div>
-
-                        <h4 class="mb-3">{{ _('Work Information') }}</h4>
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <div class="form-check">
-                                    {{ form.can_drive(class="form-check-input") }}
-                                    {{ form.can_drive.label(class="form-check-label") }}
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-check">
-                                    {{ form.has_car(class="form-check-input") }}
-                                    {{ form.has_car.label(class="form-check-label") }}
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                {{ form.available_start_date.label(class="form-label") }}
-                                <span class="text-danger">*</span>
-                                {{ form.available_start_date(class="form-control", type="date") }}
-                                {% for error in form.available_start_date.errors %}
-                                    <span class="text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
+                        <div class="form-group mb-3">
+                            {{ form.visa_expiry.label(class="form-label") }}
+                            {{ form.visa_expiry(class="form-control", type="date") }}
                         </div>
-
-                        <h4 class="mb-3">{{ _('Skills') }}</h4>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="form-check">
-                                    {{ form.english_speaking(class="form-check-input") }}
-                                    {{ form.english_speaking.label(class="form-check-label") }}
-                                </div>
-                                <div class="form-check">
-                                    {{ form.english_writing(class="form-check-input") }}
-                                    {{ form.english_writing.label(class="form-check-label") }}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-check">
-                                    {{ form.forklift_license(class="form-check-input") }}
-                                    {{ form.forklift_license.label(class="form-check-label") }}
-                                </div>
-                                {{ form.forklift_experience_years.label(class="form-label") }}
-                                {{ form.forklift_experience_years(class="form-control") }}
-                            </div>
-                        </div>
-
-                        <h4 class="mb-3">{{ _('Work Experience') }}</h4>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="form-check">
-                                    {{ form.warehouse_experience(class="form-check-input") }}
-                                    {{ form.warehouse_experience.label(class="form-check-label") }}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                {{ form.last_warehouse_company.label(class="form-label") }}
-                                {{ form.last_warehouse_company(class="form-control") }}
-                            </div>
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            {{ form.submit(class="btn btn-primary btn-lg") }}
-                            <a href="{{ url_for('auth.change_password') }}" class="btn btn-secondary btn-lg">
-                                {{ _('Change Password') }}
-                            </a>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+
+                <!-- 驾驶信息 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">{{ _('Driving Information') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            {{ form.can_drive(class="form-check-input") }}
+                            {{ form.can_drive.label(class="form-check-label") }}
+                        </div>
+                        <div class="form-check mb-3">
+                            {{ form.has_car(class="form-check-input") }}
+                            {{ form.has_car.label(class="form-check-label") }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.available_start_date.label(class="form-label") }}
+                            {{ form.available_start_date(class="form-control", type="date") }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 语言能力 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">{{ _('Language Skills') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            {{ form.english_speaking(class="form-check-input") }}
+                            {{ form.english_speaking.label(class="form-check-label") }}
+                        </div>
+                        <div class="form-check mb-3">
+                            {{ form.english_writing(class="form-check-input") }}
+                            {{ form.english_writing.label(class="form-check-label") }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 工作经验 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">{{ _('Work Experience') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            {{ form.forklift_license(class="form-check-input") }}
+                            {{ form.forklift_license.label(class="form-check-label") }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.forklift_experience_years.label(class="form-label") }}
+                            {{ form.forklift_experience_years(class="form-control") }}
+                        </div>
+                        <div class="form-check mb-3">
+                            {{ form.warehouse_experience(class="form-check-input") }}
+                            {{ form.warehouse_experience.label(class="form-check-label") }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.last_warehouse_company.label(class="form-label") }}
+                            {{ form.last_warehouse_company(class="form-control") }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 简历上传 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">{{ _('Resume') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group mb-3">
+                            {{ form.resume.label(class="form-label") }}
+                            {{ form.resume(class="form-control") }}
+                            <small class="text-muted">{{ _('Allowed file types: PDF, DOC, DOCX') }}</small>
+                        </div>
+                        {% if resume_url %}
+                            <div class="mt-3">
+                                <h6>{{ _('Current Resume:') }}</h6>
+                                <div class="d-flex align-items-center">
+                                    <a href="{{ resume_url }}" target="_blank" class="btn btn-outline-primary me-2">
+                                        <i class="fas fa-download"></i> {{ _('Download') }}
+                                    </a>
+                                    <button type="button" class="btn btn-outline-danger me-2" onclick="deleteResume()">
+                                        <i class="fas fa-trash"></i> {{ _('Delete') }}
+                                    </button>
+                                    <button type="button" class="btn btn-outline-info" onclick="showResumeInfo()">
+                                        <i class="fas fa-info-circle"></i> {{ _('Info') }}
+                                    </button>
+                                </div>
+                                <div id="resumeInfo" class="mt-3" style="display: none;">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p class="mb-1"><strong>{{ _('Filename:') }}</strong> <span id="resumeFilename"></span></p>
+                                            <p class="mb-1"><strong>{{ _('Size:') }}</strong> <span id="resumeSize"></span></p>
+                                            <p class="mb-1"><strong>{{ _('Uploaded:') }}</strong> <span id="resumeCreated"></span></p>
+                                            <p class="mb-0"><strong>{{ _('Last Modified:') }}</strong> <span id="resumeModified"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+function formatDate(timestamp) {
+    return new Date(timestamp * 1000).toLocaleString();
+}
+
+function deleteResume() {
+    if (confirm("{{ _('Are you sure you want to delete your resume?') }}")) {
+        fetch("{{ url_for('auth.delete_resume', user_id=current_user.id) }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("{{ _('An error occurred while deleting the resume.') }}");
+        });
+    }
+}
+
+function showResumeInfo() {
+    const infoDiv = document.getElementById('resumeInfo');
+    if (infoDiv.style.display === 'none') {
+        fetch("{{ url_for('auth.resume_info', user_id=current_user.id) }}")
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('resumeFilename').textContent = data.data.filename;
+                    document.getElementById('resumeSize').textContent = formatBytes(data.data.size);
+                    document.getElementById('resumeCreated').textContent = formatDate(data.data.created);
+                    document.getElementById('resumeModified').textContent = formatDate(data.data.modified);
+                    infoDiv.style.display = 'block';
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("{{ _('An error occurred while fetching resume information.') }}");
+            });
+    } else {
+        infoDiv.style.display = 'none';
+    }
+}
+</script>
 {% endblock %} 

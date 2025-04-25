@@ -1,100 +1,127 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField, DateField, FloatField
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Optional
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField, DateField, FloatField, TextAreaField
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Optional, Length
 from flask_babel import lazy_gettext as _l
 from app.models import User
+from flask_wtf.file import FileField, FileAllowed
 
 class LoginForm(FlaskForm):
-    username = StringField(_l('Username'), validators=[DataRequired()])
-    password = PasswordField(_l('Password'), validators=[DataRequired()])
-    remember_me = BooleanField(_l('Remember Me'))
-    submit = SubmitField(_l('Sign In'))
+    username = StringField(_l('用户名'), validators=[DataRequired()])
+    password = PasswordField(_l('密码'), validators=[DataRequired()])
+    remember_me = BooleanField(_l('记住我'))
+    submit = SubmitField(_l('登录'))
 
 class RegistrationForm(FlaskForm):
-    username = StringField(_l('Username'), validators=[DataRequired()])
-    email = StringField(_l('Email'), validators=[DataRequired(), Email()])
-    password = PasswordField(_l('Password'), validators=[DataRequired()])
-    password2 = PasswordField(_l('Repeat Password'), 
-        validators=[DataRequired(), EqualTo('password')])
+    username = StringField(_l('用户名'), validators=[DataRequired()])
+    email = StringField(_l('邮箱'), validators=[DataRequired(), Email()])
+    password = PasswordField(_l('密码'), validators=[DataRequired()])
+    password2 = PasswordField(_l('确认密码'), validators=[DataRequired(), EqualTo('password')])
     
     # Personal Information
-    name = StringField(_l('Full Name'), validators=[DataRequired()])
-    gender = SelectField(_l('Gender'), 
-        choices=[('male', _l('Male')), ('female', _l('Female'))],
+    name = StringField(_l('姓名'), validators=[DataRequired(), Length(max=64)])
+    gender = SelectField(_l('性别'), choices=[('male', _l('男')), ('female', _l('女')), ('other', _l('其他'))],
         validators=[DataRequired()])
-    age = IntegerField(_l('Age'), validators=[DataRequired()])
-    phone = StringField(_l('Phone Number'), validators=[DataRequired()])
-    suburb = StringField(_l('Suburb'), validators=[DataRequired()])
+    age = IntegerField(_l('年龄'), validators=[DataRequired()])
+    phone = StringField(_l('电话'), validators=[DataRequired(), Length(max=20)])
+    suburb = StringField(_l('居住区'), validators=[DataRequired(), Length(max=100)])
     
     # Visa Information
-    visa_type = StringField(_l('Visa Type'), validators=[DataRequired()])
-    visa_expiry = DateField(_l('Visa Expiry Date'), validators=[DataRequired()])
+    visa_type = StringField(_l('签证类型'), validators=[DataRequired(), Length(max=50)])
+    visa_expiry = DateField(_l('签证到期日'), format='%Y-%m-%d', validators=[DataRequired()])
     
     # Driving Information
-    can_drive = BooleanField(_l('Can Drive'))
-    has_car = BooleanField(_l('Has Car'))
-    available_start_date = DateField(_l('Available Start Date'), validators=[DataRequired()])
+    can_drive = BooleanField(_l('有驾照'))
+    has_car = BooleanField(_l('有车'))
+    available_start_date = DateField(_l('可开始工作日期'), format='%Y-%m-%d', validators=[DataRequired()])
     
     # Language Skills
-    english_speaking = BooleanField(_l('Can Speak English'))
-    english_writing = BooleanField(_l('Can Write English'))
+    english_speaking = BooleanField(_l('英语口语'))
+    english_writing = BooleanField(_l('英语写作'))
     
     # Work Experience
-    forklift_license = BooleanField(_l('Has Forklift License'))
-    forklift_experience_years = FloatField(_l('Forklift Experience (Years)'), 
-        validators=[Optional()])
-    warehouse_experience = BooleanField(_l('Has Warehouse Experience'))
-    last_warehouse_company = StringField(_l('Last Warehouse Company'), 
-        validators=[Optional()])
+    forklift_license = BooleanField(_l('叉车证'))
+    forklift_experience_years = FloatField(_l('叉车工作年限'), validators=[Optional()])
+    warehouse_experience = BooleanField(_l('仓库工作经验'))
+    last_warehouse_company = StringField(_l('上一个仓库公司'), validators=[Length(max=100)])
     
-    submit = SubmitField(_l('Register'))
+    submit = SubmitField(_l('注册'))
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError(_l('Please use a different username.'))
+            raise ValidationError(_l('该用户名已被使用，请使用其他用户名。'))
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError(_l('Please use a different email address.'))
+            raise ValidationError(_l('该邮箱已被注册，请使用其他邮箱。'))
 
 class ProfileForm(FlaskForm):
-    # Personal Information
-    name = StringField(_l('Full Name'), validators=[DataRequired()])
-    gender = SelectField(_l('Gender'), 
-        choices=[('male', _l('Male')), ('female', _l('Female'))],
-        validators=[DataRequired()])
-    age = IntegerField(_l('Age'), validators=[DataRequired()])
-    phone = StringField(_l('Phone Number'), validators=[DataRequired()])
-    suburb = StringField(_l('Suburb'), validators=[DataRequired()])
+    name = StringField(_l('姓名'), validators=[DataRequired(), Length(max=64)])
+    gender = SelectField(_l('性别'), choices=[('male', _l('男')), ('female', _l('女')), ('other', _l('其他'))])
+    age = IntegerField(_l('年龄'), validators=[DataRequired()])
+    phone = StringField(_l('电话'), validators=[DataRequired(), Length(max=20)])
+    suburb = StringField(_l('居住区'), validators=[DataRequired(), Length(max=100)])
+    
+    # 个人简介
+    about_me = TextAreaField(_l('个人简介'), validators=[Length(max=500)],
+                           description=_l('请介绍一下你自己（最多500字）'))
     
     # Visa Information
-    visa_type = StringField(_l('Visa Type'), validators=[DataRequired()])
-    visa_expiry = DateField(_l('Visa Expiry Date'), validators=[DataRequired()])
+    visa_type = StringField(_l('签证类型'), validators=[DataRequired(), Length(max=50)])
+    visa_expiry = DateField(_l('签证到期日'), format='%Y-%m-%d', validators=[DataRequired()])
     
     # Driving Information
-    can_drive = BooleanField(_l('Can Drive'))
-    has_car = BooleanField(_l('Has Car'))
-    available_start_date = DateField(_l('Available Start Date'), validators=[DataRequired()])
+    can_drive = BooleanField(_l('有驾照'))
+    has_car = BooleanField(_l('有车'))
+    available_start_date = DateField(_l('可开始工作日期'), format='%Y-%m-%d', validators=[DataRequired()])
     
     # Language Skills
-    english_speaking = BooleanField(_l('Can Speak English'))
-    english_writing = BooleanField(_l('Can Write English'))
+    english_speaking = BooleanField(_l('英语口语'))
+    english_writing = BooleanField(_l('英语写作'))
     
     # Work Experience
-    forklift_license = BooleanField(_l('Has Forklift License'))
-    forklift_experience_years = FloatField(_l('Forklift Experience (Years)'), 
-        validators=[Optional()])
-    warehouse_experience = BooleanField(_l('Has Warehouse Experience'))
-    last_warehouse_company = StringField(_l('Last Warehouse Company'), 
-        validators=[Optional()])
+    forklift_license = BooleanField(_l('叉车证'))
+    forklift_experience_years = FloatField(_l('叉车工作年限'), validators=[Optional()])
+    warehouse_experience = BooleanField(_l('仓库工作经验'))
+    last_warehouse_company = StringField(_l('上一个仓库公司'), validators=[Length(max=100)])
     
-    submit = SubmitField(_l('Update Profile'))
+    email = StringField(_l('邮箱'), validators=[DataRequired(), Email()])
+    resume = FileField(_l('简历'), 
+                      validators=[FileAllowed(['pdf', 'doc', 'docx'], _l('PDF和Word文档仅限上传'))],
+                      description=_l('拖放或点击上传'))
+    
+    submit = SubmitField(_l('保存'))
 
 class ChangePasswordForm(FlaskForm):
-    old_password = PasswordField(_l('Current Password'), validators=[DataRequired()])
-    password = PasswordField(_l('New Password'), validators=[DataRequired()])
-    password2 = PasswordField(_l('Repeat New Password'), 
-        validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField(_l('Change Password')) 
+    old_password = PasswordField(_l('当前密码'), validators=[DataRequired()])
+    password = PasswordField(_l('新密码'), validators=[DataRequired()])
+    password2 = PasswordField(_l('确认新密码'), validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField(_l('更改密码'))
+
+class EditProfileForm(FlaskForm):
+    username = StringField(_l('用户名'), validators=[DataRequired()])
+    email = StringField(_l('邮箱'), validators=[DataRequired(), Email()])
+    about_me = TextAreaField(_l('个人简介'), validators=[Length(max=500)],
+                           description=_l('请介绍一下你自己（最多500字）'))
+    avatar = FileField(_l('头像'), validators=[
+        FileAllowed(['jpg', 'png', 'jpeg'], _l('只允许上传jpg或png格式的图片'))
+    ])
+    submit = SubmitField(_l('保存修改'))
+
+    def __init__(self, original_username, original_email, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.original_username = original_username
+        self.original_email = original_email
+
+    def validate_username(self, username):
+        if username.data != self.original_username:
+            user = User.query.filter_by(username=username.data).first()
+            if user is not None:
+                raise ValidationError(_l('该用户名已被使用，请使用其他用户名。'))
+
+    def validate_email(self, email):
+        if email.data != self.original_email:
+            user = User.query.filter_by(email=email.data).first()
+            if user is not None:
+                raise ValidationError(_l('该邮箱已被注册，请使用其他邮箱。')) 

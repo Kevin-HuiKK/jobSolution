@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">{{ _('User Profile') }}: {{ user.username }}</h3>
+                    <a href="{{ url_for('admin.users') }}" class="btn btn-light btn-sm">
+                        <i class="fas fa-arrow-left"></i> {{ _('Back to Users List') }}
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5>{{ _('Basic Information') }}</h5>
+                        <dl class="row">
+                            <dt class="col-sm-3">{{ _('Username') }}</dt>
+                            <dd class="col-sm-9">{{ user.username }}</dd>
+
+                            <dt class="col-sm-3">{{ _('Email') }}</dt>
+                            <dd class="col-sm-9">{{ user.email }}</dd>
+
+                            <dt class="col-sm-3">{{ _('Role') }}</dt>
+                            <dd class="col-sm-9">
+                                <span class="badge bg-{{ 'primary' if user.is_admin else 'secondary' }}">
+                                    {{ _('Admin') if user.is_admin else _('User') }}
+                                </span>
+                            </dd>
+
+                            <dt class="col-sm-3">{{ _('Full Name') }}</dt>
+                            <dd class="col-sm-9">{{ user.name or _('Not provided') }}</dd>
+
+                            <dt class="col-sm-3">{{ _('Gender') }}</dt>
+                            <dd class="col-sm-9">{{ user.gender or _('Not provided') }}</dd>
+
+                            <dt class="col-sm-3">{{ _('Age') }}</dt>
+                            <dd class="col-sm-9">{{ user.age or _('Not provided') }}</dd>
+
+                            <dt class="col-sm-3">{{ _('Phone') }}</dt>
+                            <dd class="col-sm-9">{{ user.phone or _('Not provided') }}</dd>
+
+                            <dt class="col-sm-3">{{ _('Suburb') }}</dt>
+                            <dd class="col-sm-9">{{ user.suburb or _('Not provided') }}</dd>
+                        </dl>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>{{ _('Visa Information') }}</h5>
+                        <dl class="row">
+                            <dt class="col-sm-3">{{ _('Visa Type') }}</dt>
+                            <dd class="col-sm-9">{{ user.visa_type or _('Not provided') }}</dd>
+
+                            <dt class="col-sm-3">{{ _('Visa Expiry') }}</dt>
+                            <dd class="col-sm-9">
+                                {{ user.visa_expiry.strftime('%Y-%m-%d') if user.visa_expiry else _('Not provided') }}
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>{{ _('Work Information') }}</h5>
+                        <dl class="row">
+                            <dt class="col-sm-3">{{ _('Can Drive') }}</dt>
+                            <dd class="col-sm-9">
+                                <i class="fas fa-{{ 'check text-success' if user.can_drive else 'times text-danger' }}"></i>
+                            </dd>
+
+                            <dt class="col-sm-3">{{ _('Has Car') }}</dt>
+                            <dd class="col-sm-9">
+                                <i class="fas fa-{{ 'check text-success' if user.has_car else 'times text-danger' }}"></i>
+                            </dd>
+
+                            <dt class="col-sm-3">{{ _('Available Start Date') }}</dt>
+                            <dd class="col-sm-9">
+                                {{ user.available_start_date.strftime('%Y-%m-%d') if user.available_start_date else _('Not provided') }}
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>{{ _('Skills') }}</h5>
+                        <dl class="row">
+                            <dt class="col-sm-3">{{ _('English Speaking') }}</dt>
+                            <dd class="col-sm-9">
+                                <i class="fas fa-{{ 'check text-success' if user.english_speaking else 'times text-danger' }}"></i>
+                            </dd>
+
+                            <dt class="col-sm-3">{{ _('English Writing') }}</dt>
+                            <dd class="col-sm-9">
+                                <i class="fas fa-{{ 'check text-success' if user.english_writing else 'times text-danger' }}"></i>
+                            </dd>
+
+                            <dt class="col-sm-3">{{ _('Forklift License') }}</dt>
+                            <dd class="col-sm-9">
+                                <i class="fas fa-{{ 'check text-success' if user.forklift_license else 'times text-danger' }}"></i>
+                            </dd>
+
+                            <dt class="col-sm-3">{{ _('Forklift Experience') }}</dt>
+                            <dd class="col-sm-9">
+                                {{ user.forklift_experience_years }} {{ _('years') if user.forklift_experience_years else _('No experience') }}
+                            </dd>
+
+                            <dt class="col-sm-3">{{ _('Warehouse Experience') }}</dt>
+                            <dd class="col-sm-9">
+                                <i class="fas fa-{{ 'check text-success' if user.warehouse_experience else 'times text-danger' }}"></i>
+                                {% if user.warehouse_experience and user.last_warehouse_company %}
+                                    <br>
+                                    <small class="text-muted">{{ _('Last company') }}: {{ user.last_warehouse_company }}</small>
+                                {% endif %}
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <!-- 个人简介 -->
+                    {% if user.about_me %}
+                    <div class="mb-4">
+                        <h5>{{ _('个人简介') }}</h5>
+                        <p class="card-text">{{ user.about_me }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if user.resume_path %}
+                    <div class="mb-4">
+                        <h5>{{ _('Resume') }}</h5>
+                        <a href="{{ url_for('auth.download_resume', user_id=user.id) }}" class="btn btn-outline-primary">
+                            <i class="fas fa-download"></i> {{ _('Download Resume') }}
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    {% if applications %}
+                    <div class="mb-4">
+                        <h5>{{ _('Application History') }}</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>{{ _('Job Title') }}</th>
+                                        <th>{{ _('Applied Date') }}</th>
+                                        <th>{{ _('Status') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for app in applications %}
+                                    <tr>
+                                        <td>
+                                            {% if session.get('language') == 'zh' and app.job.title_zh %}
+                                                {{ app.job.title_zh }}
+                                            {% else %}
+                                                {{ app.job.title }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ moment(app.applied_at).format('L') }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ {
+                                                'pending': 'warning',
+                                                'accepted': 'success',
+                                                'rejected': 'danger'
+                                            }[app.status] }}">
+                                                {{ _(app.status|title) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
