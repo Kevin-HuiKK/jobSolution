@@ -1,237 +1,377 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Hero Section -->
-<div class="hero-section position-relative mb-5">
-    <div class="hero-image position-absolute w-100 h-100" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/static/images/warehouse-hero.jpg') no-repeat center center; background-size: cover;"></div>
-    <div class="container position-relative py-5">
-        <div class="row min-vh-50 align-items-center py-5">
-            <div class="col-lg-8 text-white">
-                <h1 class="display-4 fw-bold mb-4">{{ _('Find Your Next Warehouse Career') }}</h1>
-                <p class="lead mb-4">{{ _('We connect skilled workers with Australia\'s leading logistics companies') }}</p>
-                <a href="{{ url_for('main.jobs') }}" class="btn btn-primary btn-lg px-4 me-3">
-                    <i class="fas fa-search me-2"></i>{{ _('Browse Jobs') }}
-                </a>
-                {% if not current_user.is_authenticated %}
-                <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg px-4">
-                    <i class="fas fa-user-plus me-2"></i>{{ _('Register Now') }}
-                </a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Featured Jobs Section -->
-<div class="container mb-5">
-    <div class="row mb-4">
-        <div class="col">
-            <h2 class="section-title fw-bold">{{ _('Latest Job Opportunities') }}</h2>
-        </div>
-    </div>
-    
-    <div class="row g-4">
-        {% for job in jobs %}
-        <div class="col-md-6 col-lg-4">
-            <div class="card h-100 job-card shadow-sm hover-shadow">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <h5 class="card-title mb-1">
-                                {% if g.locale == 'zh' and job.title_zh %}
-                                    {{ job.title_zh }}
-                                {% else %}
-                                    {{ job.title }}
-                                {% endif %}
-                            </h5>
-                            <p class="text-muted mb-0">
-                                <i class="fas fa-map-marker-alt me-2"></i>{{ job.location }}
-                            </p>
-                        </div>
-                        {% if (job.created_at.date() - now.date()).days <= 7 %}
-                            <span class="badge bg-primary">{{ _('New') }}</span>
-                        {% endif %}
-                    </div>
-                    
-                    <p class="card-text text-truncate mb-3">
-                        {% if g.locale == 'zh' and job.description_zh %}
-                            {{ job.description_zh }}
-                        {% else %}
-                            {{ job.description }}
-                        {% endif %}
-                    </p>
-                    
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="job-meta small text-muted">
-                            <span class="me-3">
-                                <i class="fas fa-users me-1"></i>
-                                {{ job.headcount if job.headcount != 'any' else _('Multiple') }}
-                            </span>
-                            <span>
-                                <i class="fas fa-clock me-1"></i>
-                                {{ moment(job.created_at).fromNow() }}
-                            </span>
-                        </div>
-                        <a href="{{ url_for('main.job', id=job.id) }}" class="btn btn-outline-primary">
-                            {{ _('View Details') }}
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    
-    {% if jobs|length == 0 %}
-    <div class="text-center py-5">
-        <div class="mb-3">
-            <i class="fas fa-briefcase fa-3x text-muted"></i>
-        </div>
-        <h3>{{ _('No jobs available at the moment') }}</h3>
-        <p class="text-muted">{{ _('Please check back later for new opportunities') }}</p>
-    </div>
-    {% endif %}
-    
-    {% if jobs|length >= 6 %}
-    <div class="text-center mt-5">
-        <a href="{{ url_for('main.jobs') }}" class="btn btn-lg btn-primary px-5">
-            {{ _('View All Jobs') }} <i class="fas fa-arrow-right ms-2"></i>
-        </a>
-    </div>
-    {% endif %}
-</div>
-
-<!-- Industry Categories -->
-<div class="bg-light py-5 mb-5">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col text-center">
-                <h2 class="section-title fw-bold mb-3">{{ _('Our Focus Areas') }}</h2>
-                <p class="text-muted">{{ _('We specialize in connecting talent with opportunities in these key industries') }}</p>
-            </div>
-        </div>
-        
+<div class="main-container">
+    <div class="overlay"></div>
+    <div class="container py-5">
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card border-0 bg-white shadow-sm hover-shadow h-100">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-box mb-3">
-                            <i class="fas fa-warehouse fa-3x text-primary"></i>
+            <!-- 网站宣传部分 -->
+            <div class="col-lg-6 mb-4">
+                <div class="content-card h-100">
+                    <div class="card-body p-4">
+                        <h1 class="main-title mb-4">
+                            {% if session.get('language') == 'zh' %}
+                                找到理想的仓储工作
+                            {% else %}
+                                Find Your Perfect Warehouse Job
+                            {% endif %}
+                        </h1>
+                        
+                        <div class="features-grid">
+                            <div class="feature-box">
+                                <div class="feature-icon">
+                                    <i class="fas fa-check-circle text-success"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>
+                                        {% if session.get('language') == 'zh' %}
+                                            简单的申请流程
+                                        {% else %}
+                                            Easy Application Process
+                                        {% endif %}
+                                    </h4>
+                                    <p>
+                                        {% if session.get('language') == 'zh' %}
+                                            注册快捷，一键申请工作，让求职变得更轻松。
+                                        {% else %}
+                                            Simple registration and one-click job applications make finding work easier than ever.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-box">
+                                <div class="feature-icon">
+                                    <i class="fas fa-users text-info"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>
+                                        {% if session.get('language') == 'zh' %}
+                                            多样的工作机会
+                                        {% else %}
+                                            Diverse Opportunities
+                                        {% endif %}
+                                    </h4>
+                                    <p>
+                                        {% if session.get('language') == 'zh' %}
+                                            从叉车司机到仓库普工，总有适合你的岗位。
+                                        {% else %}
+                                            From forklift operators to general warehouse staff, find the role that matches your skills.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-box">
+                                <div class="feature-icon">
+                                    <i class="fas fa-clock text-warning"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>
+                                        {% if session.get('language') == 'zh' %}
+                                            灵活的工作时间
+                                        {% else %}
+                                            Flexible Schedules
+                                        {% endif %}
+                                    </h4>
+                                    <p>
+                                        {% if session.get('language') == 'zh' %}
+                                            全职、兼职、临时工多种选择，适配你的时间安排。
+                                        {% else %}
+                                            Full-time, part-time, and casual positions available to suit your availability.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-box">
+                                <div class="feature-icon">
+                                    <i class="fas fa-map-marker-alt text-danger"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>
+                                        {% if session.get('language') == 'zh' %}
+                                            本地优质岗位
+                                        {% else %}
+                                            Local Jobs
+                                        {% endif %}
+                                    </h4>
+                                    <p>
+                                        {% if session.get('language') == 'zh' %}
+                                            在你所在地区找到理想的仓库工作机会。
+                                        {% else %}
+                                            Find warehouse work opportunities in your local area.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <h4 class="card-title">{{ _('Warehouse Operations') }}</h4>
-                        <p class="card-text text-muted">{{ _('Pickers, Packers, Forklift Operators, and more') }}</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="card border-0 bg-white shadow-sm hover-shadow h-100">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-box mb-3">
-                            <i class="fas fa-truck fa-3x text-primary"></i>
-                        </div>
-                        <h4 class="card-title">{{ _('Logistics') }}</h4>
-                        <p class="card-text text-muted">{{ _('Transport, Distribution, and Supply Chain roles') }}</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="card border-0 bg-white shadow-sm hover-shadow h-100">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-box mb-3">
-                            <i class="fas fa-industry fa-3x text-primary"></i>
-                        </div>
-                        <h4 class="card-title">{{ _('Manufacturing') }}</h4>
-                        <p class="card-text text-muted">{{ _('Production, Assembly, and Quality Control positions') }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Call to Action -->
-<div class="container mb-5">
-    <div class="row">
-        <div class="col-lg-10 offset-lg-1">
-            <div class="card bg-primary text-white shadow">
-                <div class="card-body p-5 text-center">
-                    <h3 class="mb-4">{{ _('Ready to Take the Next Step in Your Career?') }}</h3>
-                    <p class="lead mb-4">{{ _('Join our platform to access exclusive job opportunities and connect with top employers') }}</p>
-                    {% if not current_user.is_authenticated %}
-                    <a href="{{ url_for('auth.register') }}" class="btn btn-lg btn-light">
-                        <i class="fas fa-user-plus me-2"></i>{{ _('Create Your Profile Now') }}
-                    </a>
-                    {% else %}
-                    <a href="{{ url_for('main.jobs') }}" class="btn btn-lg btn-light">
-                        <i class="fas fa-search me-2"></i>{{ _('Find Jobs') }}
-                    </a>
-                    {% endif %}
+                        {% if not current_user.is_authenticated %}
+                            <div class="text-center mt-5">
+                                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm">
+                                    {% if session.get('language') == 'zh' %}
+                                        立即注册
+                                    {% else %}
+                                        Register Now
+                                    {% endif %}
+                                    <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工作列表部分 -->
+            <div class="col-lg-6">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="section-title mb-0">
+                            {% if session.get('language') == 'zh' %}
+                                招聘岗位
+                            {% else %}
+                                Available Positions
+                            {% endif %}
+                        </h2>
+                    </div>
+                    <div class="card-body p-4">
+                        {% if jobs %}
+                            <div class="job-list">
+                                {% for job in jobs %}
+                                    <div class="job-card">
+                                        <div class="job-info">
+                                            <h3 class="job-title">
+                                                {% if session.get('language') == 'zh' and job.title_zh %}
+                                                    {{ job.title_zh }}
+                                                {% else %}
+                                                    {{ job.title }}
+                                                {% endif %}
+                                            </h3>
+                                            <div class="job-meta">
+                                                <span class="location">
+                                                    <i class="fas fa-map-marker-alt"></i> {{ job.location }}
+                                                </span>
+                                                <span class="date">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                    {% if session.get('language') == 'zh' %}
+                                                        发布于: {{ job.created_at.strftime('%Y-%m-%d') }}
+                                                    {% else %}
+                                                        Posted on: {{ job.created_at.strftime('%Y-%m-%d') }}
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <a href="{{ url_for('main.job', id=job.id) }}" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                                            {% if session.get('language') == 'zh' %}
+                                                查看详情
+                                            {% else %}
+                                                View Details
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                {% if session.get('language') == 'zh' %}
+                                    当前暂无可用职位。
+                                {% else %}
+                                    No jobs available at the moment.
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
 {% block styles %}
 <style>
-.hero-section {
-    min-height: 500px;
+.main-container {
+    position: relative;
+    min-height: calc(100vh - 76px);
+    background: url('/static/img/background.png') no-repeat center center fixed;
+    background-size: cover;
+    padding: 20px 0;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.8) 100%);
+    backdrop-filter: blur(2px);
+}
+
+.content-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(4px);
     overflow: hidden;
 }
 
-.hero-image {
-    z-index: -1;
-}
-
-.min-vh-50 {
-    min-height: 50vh;
-}
-
-.hover-shadow {
-    transition: all 0.3s ease;
-}
-
-.hover-shadow:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-}
-
-.job-card {
-    border: none;
-    transition: all 0.3s ease;
-}
-
-.job-card:hover {
-    border-color: var(--bs-primary);
-}
-
-.icon-box {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: rgba(var(--bs-primary-rgb), 0.1);
+.main-title {
+    color: #1a73e8;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    line-height: 1.2;
 }
 
 .section-title {
-    position: relative;
-    padding-bottom: 15px;
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
-.section-title::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 50px;
-    height: 3px;
-    background-color: var(--bs-primary);
+.card-header {
+    background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+    color: white;
+    padding: 1.5rem;
+    border: none;
+}
+
+.features-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.feature-box {
+    display: flex;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.feature-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.feature-icon i {
+    font-size: 1.5rem;
+}
+
+.feature-content {
+    flex: 1;
+}
+
+.feature-content h4 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.feature-content p {
+    color: #6c757d;
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.job-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.job-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    background: white;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.job-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-color: #1a73e8;
+}
+
+.job-info {
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.job-title {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.job-meta {
+    display: flex;
+    gap: 1rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.job-meta i {
+    margin-right: 0.25rem;
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 10px 0;
+    }
+    
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .feature-box {
+        padding: 1rem;
+    }
+    
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .feature-content h4 {
+        font-size: 1.1rem;
+    }
+    
+    .job-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .job-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
 </style>
-{% endblock %} 
+{% endblock %}
+{% endblock %}

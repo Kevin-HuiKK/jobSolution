@@ -10,7 +10,7 @@ from datetime import datetime
 @bp.route('/index')
 def index():
     jobs = Job.query.filter_by(is_active=True).order_by(Job.created_at.desc()).all()
-    return render_template('main/index.html', title=_('Home'), jobs=jobs, now=datetime.now())
+    return render_template('main/index.html', title=_('Home'), jobs=jobs)
 
 @bp.route('/job/<int:id>')
 def job(id):
