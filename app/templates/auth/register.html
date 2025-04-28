@@ -1,20 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% if g.language == 'zh' %}
+    <!-- 中文版本 -->
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h1 class="h3 mb-0">{{ _('Register') }}</h1>
+                    <h1 class="h3 mb-0">注册</h1>
                 </div>
                 <div class="card-body">
                     <form action="" method="post" novalidate>
                         {{ form.hidden_tag() }}
                         
-                        <h4 class="mb-3">{{ _('Account Information') }}</h4>
+                        <h4 class="mb-3">账户信息</h4>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                {{ form.username.label(class="form-label") }}
+                                <label class="form-label">用户名</label>
                                 <span class="text-danger">*</span>
                                 {{ form.username(class="form-control") }}
                                 {% for error in form.username.errors %}
@@ -22,7 +24,7 @@
                                 {% endfor %}
                             </div>
                             <div class="col-md-6">
-                                {{ form.email.label(class="form-label") }}
+                                <label class="form-label">邮箱</label>
                                 <span class="text-danger">*</span>
                                 {{ form.email(class="form-control") }}
                                 {% for error in form.email.errors %}
@@ -32,7 +34,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                {{ form.password.label(class="form-label") }}
+                                <label class="form-label">密码</label>
                                 <span class="text-danger">*</span>
                                 {{ form.password(class="form-control") }}
                                 {% for error in form.password.errors %}
@@ -40,7 +42,7 @@
                                 {% endfor %}
                             </div>
                             <div class="col-md-6">
-                                {{ form.password2.label(class="form-label") }}
+                                <label class="form-label">确认密码</label>
                                 <span class="text-danger">*</span>
                                 {{ form.password2(class="form-control") }}
                                 {% for error in form.password2.errors %}
@@ -49,10 +51,10 @@
                             </div>
                         </div>
 
-                        <h4 class="mb-3">{{ _('Personal Information') }}</h4>
+                        <h4 class="mb-3">个人信息</h4>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                {{ form.name.label(class="form-label") }}
+                                <label class="form-label">姓名</label>
                                 <span class="text-danger">*</span>
                                 {{ form.name(class="form-control") }}
                                 {% for error in form.name.errors %}
@@ -60,7 +62,7 @@
                                 {% endfor %}
                             </div>
                             <div class="col-md-4">
-                                {{ form.gender.label(class="form-label") }}
+                                <label class="form-label">性别</label>
                                 <span class="text-danger">*</span>
                                 {{ form.gender(class="form-select") }}
                                 {% for error in form.gender.errors %}
@@ -68,7 +70,7 @@
                                 {% endfor %}
                             </div>
                             <div class="col-md-4">
-                                {{ form.age.label(class="form-label") }}
+                                <label class="form-label">年龄</label>
                                 <span class="text-danger">*</span>
                                 {{ form.age(class="form-control") }}
                                 {% for error in form.age.errors %}
@@ -78,7 +80,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                {{ form.phone.label(class="form-label") }}
+                                <label class="form-label">电话</label>
                                 <span class="text-danger">*</span>
                                 {{ form.phone(class="form-control") }}
                                 {% for error in form.phone.errors %}
@@ -86,7 +88,7 @@
                                 {% endfor %}
                             </div>
                             <div class="col-md-6">
-                                {{ form.suburb.label(class="form-label") }}
+                                <label class="form-label">地区</label>
                                 <span class="text-danger">*</span>
                                 {{ form.suburb(class="form-control") }}
                                 {% for error in form.suburb.errors %}
@@ -95,10 +97,10 @@
                             </div>
                         </div>
 
-                        <h4 class="mb-3">{{ _('Visa Information') }}</h4>
+                        <h4 class="mb-3">签证信息</h4>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                {{ form.visa_type.label(class="form-label") }}
+                                <label class="form-label">签证类型</label>
                                 <span class="text-danger">*</span>
                                 {{ form.visa_type(class="form-control") }}
                                 {% for error in form.visa_type.errors %}
@@ -106,7 +108,7 @@
                                 {% endfor %}
                             </div>
                             <div class="col-md-6">
-                                {{ form.visa_expiry.label(class="form-label") }}
+                                <label class="form-label">签证到期</label>
                                 <span class="text-danger">*</span>
                                 {{ form.visa_expiry(class="form-control", type="date") }}
                                 {% for error in form.visa_expiry.errors %}
@@ -115,22 +117,22 @@
                             </div>
                         </div>
 
-                        <h4 class="mb-3">{{ _('Work Information') }}</h4>
+                        <h4 class="mb-3">工作信息</h4>
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <div class="form-check">
                                     {{ form.can_drive(class="form-check-input") }}
-                                    {{ form.can_drive.label(class="form-check-label") }}
+                                    <label class="form-check-label">有驾照</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-check">
                                     {{ form.has_car(class="form-check-input") }}
-                                    {{ form.has_car.label(class="form-check-label") }}
+                                    <label class="form-check-label">有车</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                {{ form.available_start_date.label(class="form-label") }}
+                                <label class="form-label">可用开始时间</label>
                                 <span class="text-danger">*</span>
                                 {{ form.available_start_date(class="form-control", type="date") }}
                                 {% for error in form.available_start_date.errors %}
@@ -139,53 +141,243 @@
                             </div>
                         </div>
 
-                        <h4 class="mb-3">{{ _('Skills') }}</h4>
+                        <h4 class="mb-3">技能</h4>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="form-check">
                                     {{ form.english_speaking(class="form-check-input") }}
-                                    {{ form.english_speaking.label(class="form-check-label") }}
+                                    <label class="form-check-label">英语口语</label>
                                 </div>
                                 <div class="form-check">
                                     {{ form.english_writing(class="form-check-input") }}
-                                    {{ form.english_writing.label(class="form-check-label") }}
+                                    <label class="form-check-label">英语写作</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-check">
                                     {{ form.forklift_license(class="form-check-input") }}
-                                    {{ form.forklift_license.label(class="form-check-label") }}
+                                    <label class="form-check-label">叉车驾驶证</label>
                                 </div>
-                                {{ form.forklift_experience_years.label(class="form-label") }}
+                                <label class="form-label">叉车经验年数</label>
                                 {{ form.forklift_experience_years(class="form-control") }}
                             </div>
                         </div>
 
-                        <h4 class="mb-3">{{ _('Work Experience') }}</h4>
+                        <h4 class="mb-3">工作经历</h4>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="form-check">
                                     {{ form.warehouse_experience(class="form-check-input") }}
-                                    {{ form.warehouse_experience.label(class="form-check-label") }}
+                                    <label class="form-check-label">仓库经验</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                {{ form.last_warehouse_company.label(class="form-label") }}
+                                <label class="form-label">最后一家仓库公司</label>
                                 {{ form.last_warehouse_company(class="form-control") }}
                             </div>
                         </div>
 
                         <div class="d-grid">
-                            {{ form.submit(class="btn btn-primary btn-lg") }}
+                            <button type="submit" class="btn btn-primary btn-lg">注册</button>
                         </div>
                     </form>
                 </div>
                 <div class="card-footer text-center">
-                    <p class="mb-0">{{ _('Already have an account?') }} 
-                        <a href="{{ url_for('auth.login') }}">{{ _('Click to Login!') }}</a>
-                    </p>
+                    <p class="mb-0">已有账号？<a href="{{ url_for('auth.login') }}">点击登录！</a></p>
                 </div>
             </div>
         </div>
     </div>
+    {% else %}
+    <!-- 英文版本 -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="h3 mb-0">Register</h1>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <h4 class="mb-3">Account Information</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Username</label>
+                                <span class="text-danger">*</span>
+                                {{ form.username(class="form-control") }}
+                                {% for error in form.username.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <span class="text-danger">*</span>
+                                {{ form.email(class="form-control") }}
+                                {% for error in form.email.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Password</label>
+                                <span class="text-danger">*</span>
+                                {{ form.password(class="form-control") }}
+                                {% for error in form.password.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Confirm Password</label>
+                                <span class="text-danger">*</span>
+                                {{ form.password2(class="form-control") }}
+                                {% for error in form.password2.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">Personal Information</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Name</label>
+                                <span class="text-danger">*</span>
+                                {{ form.name(class="form-control") }}
+                                {% for error in form.name.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Gender</label>
+                                <span class="text-danger">*</span>
+                                <select name="gender" id="gender" class="form-select" required>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                {% for error in form.gender.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Age</label>
+                                <span class="text-danger">*</span>
+                                {{ form.age(class="form-control") }}
+                                {% for error in form.age.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Phone</label>
+                                <span class="text-danger">*</span>
+                                {{ form.phone(class="form-control") }}
+                                {% for error in form.phone.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Suburb</label>
+                                <span class="text-danger">*</span>
+                                {{ form.suburb(class="form-control") }}
+                                {% for error in form.suburb.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">Visa Information</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Visa Type</label>
+                                <span class="text-danger">*</span>
+                                {{ form.visa_type(class="form-control") }}
+                                {% for error in form.visa_type.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Visa Expiry</label>
+                                <span class="text-danger">*</span>
+                                {{ form.visa_expiry(class="form-control", type="date") }}
+                                {% for error in form.visa_expiry.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">Work Information</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.can_drive(class="form-check-input") }}
+                                    <label class="form-check-label">Have Driver License</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.has_car(class="form-check-input") }}
+                                    <label class="form-check-label">Have Car</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Available Start Date</label>
+                                <span class="text-danger">*</span>
+                                {{ form.available_start_date(class="form-control", type="date") }}
+                                {% for error in form.available_start_date.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">Skills</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.english_speaking(class="form-check-input") }}
+                                    <label class="form-check-label">English Speaking</label>
+                                </div>
+                                <div class="form-check">
+                                    {{ form.english_writing(class="form-check-input") }}
+                                    <label class="form-check-label">English Writing</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.forklift_license(class="form-check-input") }}
+                                    <label class="form-check-label">Forklift License</label>
+                                </div>
+                                <label class="form-label">Forklift Experience Years</label>
+                                {{ form.forklift_experience_years(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">Work Experience</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.warehouse_experience(class="form-check-input") }}
+                                    <label class="form-check-label">Warehouse Experience</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Warehouse Company</label>
+                                {{ form.last_warehouse_company(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p class="mb-0">Already have an account? <a href="{{ url_for('auth.login') }}">Click to Login!</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %} 

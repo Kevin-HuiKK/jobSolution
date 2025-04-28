@@ -57,41 +57,48 @@ class RegistrationForm(FlaskForm):
             raise ValidationError(_l('该邮箱已被注册，请使用其他邮箱。'))
 
 class ProfileForm(FlaskForm):
-    name = StringField(_l('姓名'), validators=[DataRequired(), Length(max=64)])
-    gender = SelectField(_l('性别'), choices=[('male', _l('男')), ('female', _l('女')), ('other', _l('其他'))])
-    age = IntegerField(_l('年龄'), validators=[DataRequired()])
-    phone = StringField(_l('电话'), validators=[DataRequired(), Length(max=20)])
-    suburb = StringField(_l('居住区'), validators=[DataRequired(), Length(max=100)])
-    
-    # 个人简介
-    about_me = TextAreaField(_l('个人简介'), validators=[Length(max=500)],
-                           description=_l('请介绍一下你自己（最多500字）'))
+    name = StringField('Name')
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    gender = SelectField('Gender', choices=[
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other')
+    ])
+    age = IntegerField('Age', validators=[DataRequired()])
+    phone = StringField('Phone', validators=[DataRequired(), Length(max=20)])
+    suburb = StringField('Suburb', validators=[DataRequired(), Length(max=100)])
+    about_me = TextAreaField('About Me', validators=[Length(max=500)])
     
     # Visa Information
-    visa_type = StringField(_l('签证类型'), validators=[DataRequired(), Length(max=50)])
-    visa_expiry = DateField(_l('签证到期日'), format='%Y-%m-%d', validators=[DataRequired()])
+    visa_type = SelectField('Visa Type', choices=[
+        ('', 'Please select visa type'),
+        ('citizen', 'Australian Citizen'),
+        ('pr', 'Permanent Resident'),
+        ('student', 'Student Visa'),
+        ('work', 'Work Visa'),
+        ('whv', 'Working Holiday Visa'),
+        ('other', 'Other')
+    ])
+    visa_expiry = DateField('Visa Expiry Date', format='%Y-%m-%d', validators=[DataRequired()])
     
     # Driving Information
-    can_drive = BooleanField(_l('有驾照'))
-    has_car = BooleanField(_l('有车'))
-    available_start_date = DateField(_l('可开始工作日期'), format='%Y-%m-%d', validators=[DataRequired()])
+    can_drive = BooleanField('Have Driver License')
+    has_car = BooleanField('Have Car')
+    available_start_date = DateField('Available Start Date', format='%Y-%m-%d', validators=[DataRequired()])
     
     # Language Skills
-    english_speaking = BooleanField(_l('英语口语'))
-    english_writing = BooleanField(_l('英语写作'))
+    english_speaking = BooleanField('English Speaking')
+    english_writing = BooleanField('English Writing')
     
     # Work Experience
-    forklift_license = BooleanField(_l('叉车证'))
-    forklift_experience_years = FloatField(_l('叉车工作年限'), validators=[Optional()])
-    warehouse_experience = BooleanField(_l('仓库工作经验'))
-    last_warehouse_company = StringField(_l('上一个仓库公司'), validators=[Length(max=100)])
+    forklift_license = BooleanField('Forklift License')
+    forklift_experience_years = FloatField('Years of Forklift Experience', validators=[Optional()])
+    warehouse_experience = BooleanField('Warehouse Experience')
+    last_warehouse_company = StringField('Last Warehouse Company', validators=[Length(max=100)])
     
-    email = StringField(_l('邮箱'), validators=[DataRequired(), Email()])
-    resume = FileField(_l('简历'), 
-                      validators=[FileAllowed(['pdf', 'doc', 'docx'], _l('PDF和Word文档仅限上传'))],
-                      description=_l('拖放或点击上传'))
+    resume = FileField('Resume', validators=[FileAllowed(['pdf', 'doc', 'docx'])])
     
-    submit = SubmitField(_l('保存'))
+    submit = SubmitField('Save Changes')
 
 class ChangePasswordForm(FlaskForm):
     old_password = PasswordField(_l('当前密码'), validators=[DataRequired()])

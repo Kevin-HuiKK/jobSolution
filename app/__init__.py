@@ -1,4 +1,4 @@
-from flask import Flask, request, session, current_app, send_from_directory
+from flask import Flask, request, session, current_app, send_from_directory, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -25,37 +25,37 @@ def nl2br(value):
 
 def get_locale():
     if 'language' not in session:
-        session['language'] = 'en'
+        session['language'] = request.accept_languages.best_match(['zh', 'en']) or 'en'
     return session['language']
+
+# 添加请求钩子
+def register_before_request(app):
+    @app.before_request
+    def before_request():
+        g.language = session.get('language', 'en')
+        app.logger.debug(f"设置当前请求的语言: g.language = {g.language}")
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    # 确保日志目录存在
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
-    
     # 配置日志
-    file_handler = RotatingFileHandler(
-        'logs/jobweb.log',
-        maxBytes=10240,
-        backupCount=10,
-        encoding='utf-8'
-    )
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
+    file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=10)
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
     ))
-    file_handler.setLevel(logging.INFO)
+    file_handler.setLevel(logging.DEBUG)
     app.logger.addHandler(file_handler)
-    app.logger.setLevel(logging.INFO)
-    app.logger.info('JobWeb startup')
+    app.logger.setLevel(logging.DEBUG)
+    app.logger.info('应用启动')
 
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
     mail.init_app(app)
-    babel.init_app(app)
+    babel.init_app(app, locale_selector=get_locale)
     moment.init_app(app)
     bootstrap.init_app(app)
 
@@ -77,10 +77,9 @@ def create_app(config_class=Config):
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
-    # 初始化Babel
-    app.config['BABEL_DEFAULT_LOCALE'] = 'en'
-    babel.locale_selector_func = get_locale
-
+    # 注册请求钩子
+    register_before_request(app)
+    
     return app
 
 from app import models 

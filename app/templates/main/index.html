@@ -3,7 +3,7 @@
 {% block content %}
 <div class="main-container">
     <div class="overlay"></div>
-    <div class="container py-5">
+    <div class="container py-5 position-relative" style="z-index: 3;">
         <div class="row g-4">
             <!-- 网站宣传部分 -->
             <div class="col-lg-6 mb-4">
@@ -196,16 +196,19 @@
     background: url('/static/img/background.png') no-repeat center center fixed;
     background-size: cover;
     padding: 20px 0;
+    overflow-x: hidden; /* 防止水平滚动 */
 }
 
 .overlay {
-    position: absolute;
+    position: absolute; /* 改回absolute确保它跟随main-container */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.8) 100%);
     backdrop-filter: blur(2px);
+    z-index: 0; /* 调整z-index，确保它可见但在内容之下 */
+    pointer-events: none; /* 允许点击穿透 */
 }
 
 .content-card {
@@ -215,6 +218,8 @@
     border: 1px solid rgba(255, 255, 255, 0.18);
     backdrop-filter: blur(4px);
     overflow: hidden;
+    position: relative;
+    z-index: 2; /* 确保内容在遮罩层上方 */
 }
 
 .main-title {
@@ -342,10 +347,25 @@
 @media (max-width: 768px) {
     .main-container {
         padding: 10px 0;
+        min-height: auto; /* 移动端不限制最小高度 */
+    }
+    
+    .overlay {
+        position: absolute; /* 保持一致的定位方式 */
+        z-index: 0;
     }
     
     .main-title {
-        font-size: 2rem;
+        font-size: 1.75rem; /* 更小的字体 */
+        margin-bottom: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .content-card {
+        margin-bottom: 1rem;
     }
     
     .feature-box {
@@ -370,6 +390,17 @@
     .job-meta {
         flex-direction: column;
         gap: 0.5rem;
+    }
+    
+    /* 调整页面间距和布局 */
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .col-lg-6 {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 </style>

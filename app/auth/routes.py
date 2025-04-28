@@ -1,6 +1,7 @@
-from flask import render_template, redirect, url_for, flash, request, send_file, current_app, jsonify
+from flask import render_template, redirect, url_for, flash, request, send_file, current_app, jsonify, send_from_directory
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_babel import _
+from werkzeug.urls import url_parse
 from app import db
 from app.auth import bp
 from app.models import User
@@ -11,6 +12,8 @@ from app.utils import save_file, delete_file, get_file_info
 from werkzeug.utils import secure_filename
 import uuid
 import logging
+from datetime import datetime
+from flask import g
 
 # 配置日志
 logger = logging.getLogger(__name__)
@@ -234,6 +237,12 @@ def download_resume(user_id):
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
+    from flask import current_app, g, session
+    # 添加详细的调试信息
+    current_app.logger.debug(f"当前会话信息: {session}")
+    current_app.logger.debug(f"当前语言设置 g.language: {g.language}")
+    current_app.logger.debug(f"当前请求方法: {request.method}")
+    
     form = EditProfileForm(current_user.username, current_user.email)
     if form.validate_on_submit():
         current_user.username = form.username.data

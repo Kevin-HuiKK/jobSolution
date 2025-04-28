@@ -47,7 +47,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="{{ url_for('admin.applications') }}" 
+                                        <a href="{{ url_for('admin.job_applications', job_id=job.id) }}" 
                                            class="btn btn-sm btn-info">
                                             {{ _('View') }} ({{ job.applications.count() }})
                                         </a>

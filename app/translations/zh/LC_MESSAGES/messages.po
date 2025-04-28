@@ -243,4 +243,25 @@ msgid "You do not have permission to access this page."
 msgstr "您没有权限访问此页面。"
 
 msgid "Return to Home"
-msgstr "返回首页" 
+msgstr "返回首页"
+
+msgid "Location"
+msgstr "地点"
+
+msgid "Applied Date"
+msgstr "申请日期"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "You haven't applied for any jobs yet."
+msgstr "您尚未申请任何职位。"
+
+msgid "Chinese"
+msgstr "中文"
+
+msgid "English"
+msgstr "英文" 

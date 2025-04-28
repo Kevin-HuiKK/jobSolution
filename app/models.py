@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
     interests = db.Column(db.Text)       # 新增：兴趣爱好
     
     # 文件存储相关
-    resume_path = db.Column(db.String(255))  # 保持不变
+    resume_path = db.Column(db.String(256))
     certificates_path = db.Column(db.JSON)    # 新增：证书文件路径
     
     # 时间相关

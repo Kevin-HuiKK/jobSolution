@@ -36,7 +36,7 @@ env/
 # Flask
 instance/
 .webassets-cache
-app.db
+#app.db
 
 # Logs
 *.log

@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request, current_app, send_file
+from flask import render_template, redirect, url_for, flash, request, current_app, send_file, g
 from flask_login import current_user, login_required
 from flask_babel import _
 from app import db
@@ -84,12 +84,26 @@ def toggle_job(id):
     flash(_('Job status has been updated.'))
     return redirect(url_for('admin.index'))
 
+@bp.route('/job/<int:job_id>/applications')
+@login_required
+@admin_required
+def job_applications(job_id):
+    job = Job.query.get_or_404(job_id)
+    applications = JobApplication.query.filter_by(job_id=job_id).order_by(JobApplication.applied_at.desc()).all()
+    return render_template('admin/job_applications.html', title=_('Applications'), job=job, applications=applications)
+
 @bp.route('/applications')
 @login_required
 @admin_required
 def applications():
-    applications = JobApplication.query.all()
-    return render_template('admin/applications.html', applications=applications)
+    """管理所有申请"""
+    job_id = request.args.get('job_id', type=int)
+    if job_id:
+        return redirect(url_for('admin.job_applications', job_id=job_id))
+    applications = JobApplication.query.order_by(JobApplication.applied_at.desc()).all()
+    return render_template('admin/applications.html', 
+                         title=_('All Applications'),
+                         applications=applications)
 
 @bp.route('/application/<int:id>/status/<status>')
 @login_required
@@ -181,9 +195,11 @@ def view_user(id):
 @admin_required
 def accept_application(id):
     application = JobApplication.query.get_or_404(id)
+    job_id = application.job_id
+    
     if application.status != 'pending':
         flash(_('This application has already been processed.'), 'warning')
-        return redirect(url_for('admin.applications'))
+        return redirect(request.referrer or url_for('admin.applications'))
     
     application.status = 'accepted'
     db.session.commit()
@@ -194,16 +210,22 @@ def accept_application(id):
     else:
         flash(_('Application accepted without email notification.'), 'success')
     
-    return redirect(url_for('admin.applications'))
+    # 如果referrer中包含job_applications，说明是从特定Job的申请列表来的
+    if request.referrer and 'job_applications' in request.referrer:
+        return redirect(url_for('admin.job_applications', job_id=job_id))
+    else:
+        return redirect(url_for('admin.applications'))
 
 @bp.route('/application/<int:id>/reject')
 @login_required
 @admin_required
 def reject_application(id):
     application = JobApplication.query.get_or_404(id)
+    job_id = application.job_id
+    
     if application.status != 'pending':
         flash(_('This application has already been processed.'), 'warning')
-        return redirect(url_for('admin.applications'))
+        return redirect(request.referrer or url_for('admin.applications'))
     
     application.status = 'rejected'
     db.session.commit()
@@ -214,7 +236,11 @@ def reject_application(id):
     else:
         flash(_('Application rejected without email notification.'), 'success')
     
-    return redirect(url_for('admin.applications'))
+    # 如果referrer中包含job_applications，说明是从特定Job的申请列表来的
+    if request.referrer and 'job_applications' in request.referrer:
+        return redirect(url_for('admin.job_applications', job_id=job_id))
+    else:
+        return redirect(url_for('admin.applications'))
 
 @bp.route('/application/<int:id>/resume')
 @login_required

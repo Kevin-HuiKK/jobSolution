@@ -20,7 +20,7 @@
                             {% for application in applications %}
                                 <tr>
                                     <td>
-                                        {% if session.get('language') == 'zh' and application.job.title_zh %}
+                                        {% if g.language == 'zh' and application.job.title_zh %}
                                             {{ application.job.title_zh }}
                                         {% else %}
                                             {{ application.job.title }}
@@ -50,7 +50,7 @@
                 </div>
             {% else %}
                 <div class="alert alert-info">
-                    {{ _('You have not applied for any jobs yet.') }}
+                    {{ _('You haven\'t applied for any jobs yet.') }}
                 </div>
             {% endif %}
         </div>

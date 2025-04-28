@@ -1,8 +1,38 @@
+# Flask and Extensions
 Flask==2.3.3
 Flask-SQLAlchemy==3.1.1
+Flask-Migrate==4.0.5
 Flask-Login==0.6.2
 Flask-WTF==1.1.1
 Flask-Babel==4.0.0
+Flask-Mail==0.9.1
+Flask-Moment==1.0.5
+Flask-Bootstrap==3.3.7.1
+
+# Database
+SQLAlchemy==2.0.21
+alembic==1.12.0
+
+# Utils
+Werkzeug==2.3.7
 email-validator==2.0.0
 python-dotenv==1.0.0
-Werkzeug==2.3.7 
+PyJWT==2.8.0
+WTForms==3.0.1
+
+# Production Server
+gunicorn==21.2.0
+
+# File Handling
+Pillow==10.0.0
+
+# Internationalization
+Babel==2.12.1
+
+# Time Handling
+pytz==2023.3
+
+# Development Tools
+pytest==7.4.2
+coverage==7.3.1
+python-dateutil==2.8.2 

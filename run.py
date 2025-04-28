@@ -17,6 +17,7 @@ def make_shell_context():
     return {'db': db, 'User': User, 'Job': Job, 'JobApplication': JobApplication}
 
 if __name__ == '__main__':
-    # 添加应用启动日志
     logger.info("应用程序启动")
-    app.run(debug=True) 
+    # 设置 host='0.0.0.0' 允许外部访问
+    # debug=True 开启调试模式，生产环境请设置为 False
+    app.run(host='0.0.0.0', port=5000, debug=True) 

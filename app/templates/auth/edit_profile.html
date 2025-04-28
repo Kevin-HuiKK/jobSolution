@@ -2,6 +2,8 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
+    {% if g.language == 'zh' %}
+    <!-- 中文模板 -->
     <div class="row">
         <div class="col-md-4">
             <div class="text-center mb-4">
@@ -13,32 +15,92 @@
             </div>
         </div>
         <div class="col-md-8">
-            <h1>{{ _('Edit Profile') }}</h1>
+            <h1>编辑个人资料</h1>
             <form action="" method="post" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
-                    {{ form.username.label }}
+                    <label>用户名</label>
                     {{ form.username(class="form-control") }}
                     {% for error in form.username.errors %}
                         <span class="text-danger">{{ error }}</span>
                     {% endfor %}
                 </div>
                 <div class="form-group">
-                    {{ form.about_me.label }}
-                    {{ form.about_me(class="form-control") }}
+                    <label>邮箱</label>
+                    {{ form.email(class="form-control") }}
+                    {% for error in form.email.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>个人简介</label>
+                    {{ form.about_me(class="form-control", rows=5) }}
+                    <small class="form-text text-muted">请介绍一下你自己（最多500字）</small>
                     {% for error in form.about_me.errors %}
                         <span class="text-danger">{{ error }}</span>
                     {% endfor %}
                 </div>
                 <div class="form-group">
-                    {{ form.avatar.label }}
+                    <label>头像</label>
                     {{ form.avatar(class="form-control-file") }}
+                    <small class="form-text text-muted">支持的格式：JPG、PNG</small>
                     {% for error in form.avatar.errors %}
                         <span class="text-danger">{{ error }}</span>
                     {% endfor %}
                 </div>
-                {{ form.submit(class="btn btn-primary") }}
+                <button type="submit" class="btn btn-primary">保存修改</button>
             </form>
         </div>
     </div>
+    {% else %}
+    <!-- English template -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="text-center mb-4">
+                {% if current_user.avatar %}
+                    <img class="rounded-circle" src="{{ url_for('static', filename=current_user.avatar) }}" width="128" height="128">
+                {% else %}
+                    <img class="rounded-circle" src="{{ url_for('static', filename='default_avatar.png') }}" width="128" height="128">
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h1>Edit Profile</h1>
+            <form action="" method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    <label>Username</label>
+                    {{ form.username(class="form-control") }}
+                    {% for error in form.username.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    {{ form.email(class="form-control") }}
+                    {% for error in form.email.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>About Me</label>
+                    {{ form.about_me(class="form-control", rows=5) }}
+                    <small class="form-text text-muted">Please introduce yourself (max 500 characters)</small>
+                    {% for error in form.about_me.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>Avatar</label>
+                    {{ form.avatar(class="form-control-file") }}
+                    <small class="form-text text-muted">Supported formats: JPG, PNG</small>
+                    {% for error in form.avatar.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %} 

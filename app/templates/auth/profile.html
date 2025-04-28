@@ -3,106 +3,114 @@
 {% block content %}
     <div class="row">
         <div class="col-md-8">
-            <h1>{{ _('Edit Profile') }}</h1>
+            <h1>{% if g.language == 'zh' %}编辑个人资料{% else %}Edit Profile{% endif %}</h1>
             <form action="" method="post" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
                 
-                <!-- 个人基本信息 -->
+                <!-- Personal Information -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0">{{ _('Personal Information') }}</h5>
+                        <h5 class="mb-0">{% if g.language == 'zh' %}个人基本信息{% else %}Personal Information{% endif %}</h5>
                     </div>
                     <div class="card-body">
-                        <div class="form-group mb-3">
-                            {{ form.name.label(class="form-label") }}
-                            {{ form.name(class="form-control") }}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">{% if g.language == 'zh' %}姓名{% else %}Name{% endif %}</label>
+                                    {{ form.name(class="form-control") }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">{% if g.language == 'zh' %}邮箱{% else %}Email{% endif %}</label>
+                                    {{ form.email(class="form-control") }}
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.email.label(class="form-label") }}
-                            {{ form.email(class="form-control") }}
-                        </div>
-                        <div class="form-group mb-3">
-                            {{ form.gender.label(class="form-label") }}
+                            <label class="form-label">{% if g.language == 'zh' %}性别{% else %}Gender{% endif %}</label>
                             {{ form.gender(class="form-select") }}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.age.label(class="form-label") }}
+                            <label class="form-label">{% if g.language == 'zh' %}年龄{% else %}Age{% endif %}</label>
                             {{ form.age(class="form-control") }}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.phone.label(class="form-label") }}
+                            <label class="form-label">{% if g.language == 'zh' %}电话{% else %}Phone{% endif %}</label>
                             {{ form.phone(class="form-control") }}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.suburb.label(class="form-label") }}
+                            <label class="form-label">{% if g.language == 'zh' %}居住区{% else %}Suburb{% endif %}</label>
                             {{ form.suburb(class="form-control") }}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.about_me.label(class="form-label") }}
-                            {{ form.about_me(class="form-control", rows=3) }}
+                            <label class="form-label">{% if g.language == 'zh' %}个人简介{% else %}About Me{% endif %}</label>
+                            {{ form.about_me(class="form-control") }}
                         </div>
                     </div>
                 </div>
 
-                <!-- 签证信息 -->
+                <!-- Visa Information -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0">{{ _('Visa Information') }}</h5>
+                        <h5 class="mb-0">{% if g.language == 'zh' %}签证信息{% else %}Visa Information{% endif %}</h5>
                     </div>
                     <div class="card-body">
                         <div class="form-group mb-3">
-                            {{ form.visa_type.label(class="form-label") }}
-                            {{ form.visa_type(class="form-control") }}
+                            <label class="form-label">{% if g.language == 'zh' %}签证类型{% else %}Visa Type{% endif %}</label>
+                            {{ form.visa_type(class="form-select") }}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.visa_expiry.label(class="form-label") }}
+                            <label class="form-label">{% if g.language == 'zh' %}签证到期日{% else %}Visa Expiry Date{% endif %}</label>
                             {{ form.visa_expiry(class="form-control", type="date") }}
                         </div>
                     </div>
                 </div>
 
-                <!-- 驾驶信息 -->
+                <!-- Driving Information -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0">{{ _('Driving Information') }}</h5>
+                        <h5 class="mb-0">{% if g.language == 'zh' %}驾驶信息{% else %}Driving Information{% endif %}</h5>
                     </div>
                     <div class="card-body">
                         <div class="form-check mb-3">
                             {{ form.can_drive(class="form-check-input") }}
-                            {{ form.can_drive.label(class="form-check-label") }}
+                            <label class="form-check-label">{% if g.language == 'zh' %}有驾照{% else %}Have Driver License{% endif %}</label>
                         </div>
                         <div class="form-check mb-3">
                             {{ form.has_car(class="form-check-input") }}
-                            {{ form.has_car.label(class="form-check-label") }}
+                            <label class="form-check-label">{% if g.language == 'zh' %}有车{% else %}Have Car{% endif %}</label>
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.available_start_date.label(class="form-label") }}
+                            <label class="form-label">{% if g.language == 'zh' %}可开始工作日期{% else %}Available Start Date{% endif %}</label>
                             {{ form.available_start_date(class="form-control", type="date") }}
                         </div>
                     </div>
                 </div>
 
-                <!-- 语言能力 -->
+                <!-- Language Skills -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0">{{ _('Language Skills') }}</h5>
+                        <h5 class="mb-0">{% if g.language == 'zh' %}语言能力{% else %}Language Skills{% endif %}</h5>
                     </div>
                     <div class="card-body">
                         <div class="form-check mb-3">
                             {{ form.english_speaking(class="form-check-input") }}
-                            {{ form.english_speaking.label(class="form-check-label") }}
+                            <label class="form-check-label">{% if g.language == 'zh' %}英语口语{% else %}English Speaking{% endif %}</label>
                         </div>
                         <div class="form-check mb-3">
                             {{ form.english_writing(class="form-check-input") }}
-                            {{ form.english_writing.label(class="form-check-label") }}
+                            <label class="form-check-label">{% if g.language == 'zh' %}英语写作{% else %}English Writing{% endif %}</label>
                         </div>
                     </div>
                 </div>
 
-                <!-- 工作经验 -->
+                <!-- Work Experience -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0">{{ _('Work Experience') }}</h5>
+                        <h5 class="mb-0">{% if g.language == 'zh' %}工作经验{% else %}Work Experience{% endif %}</h5>
                     </div>
                     <div class="card-body">
                         <div class="form-check mb-3">
@@ -110,7 +118,7 @@
                             {{ form.forklift_license.label(class="form-check-label") }}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.forklift_experience_years.label(class="form-label") }}
+                            <label class="form-label">{% if g.language == 'zh' %}叉车经验年数{% else %}Forklift Experience Years{% endif %}</label>
                             {{ form.forklift_experience_years(class="form-control") }}
                         </div>
                         <div class="form-check mb-3">
@@ -118,45 +126,37 @@
                             {{ form.warehouse_experience.label(class="form-check-label") }}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.last_warehouse_company.label(class="form-label") }}
+                            <label class="form-label">{% if g.language == 'zh' %}最后仓库公司{% else %}Last Warehouse Company{% endif %}</label>
                             {{ form.last_warehouse_company(class="form-control") }}
                         </div>
                     </div>
                 </div>
 
-                <!-- 简历上传 -->
+                <!-- Resume Upload -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0">{{ _('Resume') }}</h5>
+                        <h5 class="mb-0">{% if g.language == 'zh' %}简历{% else %}Resume{% endif %}</h5>
                     </div>
                     <div class="card-body">
                         <div class="form-group mb-3">
-                            {{ form.resume.label(class="form-label") }}
+                            <label class="form-label">{% if g.language == 'zh' %}简历上传{% else %}Upload Resume{% endif %}</label>
                             {{ form.resume(class="form-control") }}
-                            <small class="text-muted">{{ _('Allowed file types: PDF, DOC, DOCX') }}</small>
+                            <small class="text-muted">{% if g.language == 'zh' %}允许的文件类型：PDF、DOC、DOCX{% else %}Allowed file types: PDF, DOC, DOCX{% endif %}</small>
                         </div>
-                        {% if resume_url %}
+                        {% if current_user.resume_path %}
                             <div class="mt-3">
-                                <h6>{{ _('Current Resume:') }}</h6>
-                                <div class="d-flex align-items-center">
-                                    <a href="{{ resume_url }}" target="_blank" class="btn btn-outline-primary me-2">
-                                        <i class="fas fa-download"></i> {{ _('Download') }}
-                                    </a>
-                                    <button type="button" class="btn btn-outline-danger me-2" onclick="deleteResume()">
-                                        <i class="fas fa-trash"></i> {{ _('Delete') }}
-                                    </button>
-                                    <button type="button" class="btn btn-outline-info" onclick="showResumeInfo()">
-                                        <i class="fas fa-info-circle"></i> {{ _('Info') }}
-                                    </button>
-                                </div>
-                                <div id="resumeInfo" class="mt-3" style="display: none;">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <p class="mb-1"><strong>{{ _('Filename:') }}</strong> <span id="resumeFilename"></span></p>
-                                            <p class="mb-1"><strong>{{ _('Size:') }}</strong> <span id="resumeSize"></span></p>
-                                            <p class="mb-1"><strong>{{ _('Uploaded:') }}</strong> <span id="resumeCreated"></span></p>
-                                            <p class="mb-0"><strong>{{ _('Last Modified:') }}</strong> <span id="resumeModified"></span></p>
+                                <h6>{% if g.language == 'zh' %}当前简历{% else %}Current Resume{% endif %}:</h6>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <a href="{{ url_for('auth.download_resume', user_id=current_user.id) }}" class="btn btn-outline-primary me-2">
+                                                <i class="fas fa-download"></i> {% if g.language == 'zh' %}下载{% else %}Download{% endif %}
+                                            </a>
+                                            <button type="button" class="btn btn-outline-danger" onclick="deleteResume()">
+                                                <i class="fas fa-trash"></i> {% if g.language == 'zh' %}删除{% else %}Delete{% endif %}
+                                            </button>
                                         </div>
+                                        <p class="mb-0"><strong>{% if g.language == 'zh' %}文件名{% else %}Filename{% endif %}:</strong> <span>{{ current_user.resume_path.split('/')[-1] }}</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +165,9 @@
                 </div>
 
                 <div class="mb-3">
-                    {{ form.submit(class="btn btn-primary") }}
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> {% if g.language == 'zh' %}保存修改{% else %}Save Changes{% endif %}
+                    </button>
                 </div>
             </form>
         </div>
@@ -174,21 +176,8 @@
 
 {% block scripts %}
 <script>
-function formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
-
-function formatDate(timestamp) {
-    return new Date(timestamp * 1000).toLocaleString();
-}
-
 function deleteResume() {
-    if (confirm("{{ _('Are you sure you want to delete your resume?') }}")) {
+    if (confirm("{% if g.language == 'zh' %}确定要删除简历吗？{% else %}Are you sure you want to delete your resume?{% endif %}")) {
         fetch("{{ url_for('auth.delete_resume', user_id=current_user.id) }}", {
             method: 'POST',
             headers: {
@@ -205,33 +194,8 @@ function deleteResume() {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert("{{ _('An error occurred while deleting the resume.') }}");
+            alert("{% if g.language == 'zh' %}删除简历时发生错误。{% else %}An error occurred while deleting the resume.{% endif %}");
         });
-    }
-}
-
-function showResumeInfo() {
-    const infoDiv = document.getElementById('resumeInfo');
-    if (infoDiv.style.display === 'none') {
-        fetch("{{ url_for('auth.resume_info', user_id=current_user.id) }}")
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('resumeFilename').textContent = data.data.filename;
-                    document.getElementById('resumeSize').textContent = formatBytes(data.data.size);
-                    document.getElementById('resumeCreated').textContent = formatDate(data.data.created);
-                    document.getElementById('resumeModified').textContent = formatDate(data.data.modified);
-                    infoDiv.style.display = 'block';
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert("{{ _('An error occurred while fetching resume information.') }}");
-            });
-    } else {
-        infoDiv.style.display = 'none';
     }
 }
 </script>
