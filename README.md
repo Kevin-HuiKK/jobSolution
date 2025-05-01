@@ -73,8 +73,12 @@ python init_db.py
 flask run
 
 export FLASK_RUN_HOST=0.0.0.0
-flask run
+flask run  --port=5001
 
+
+
+测试qidong
+$env:FLASK_DEBUG=1; flask run
   #后太启动
   nohup python run.py > flask.out 2>&1 &
 
@@ -173,7 +177,43 @@ jobWeb/
 
 
 
+##nginx配置更换新
+server {
+		listen 443 ssl;
+		server_name job.topsupplier.com.au;
 
+		ssl_certificate     D:/kevin/keys/newkeys/job.topsupplier.com.au-chain.pem;
+		ssl_certificate_key D:/kevin/keys/newkeys/job.topsupplier.com.au-key.pem;
+
+		# 强制升级 HTTP 内容到 HTTPS
+		add_header Content-Security-Policy upgrade-insecure-requests;
+
+		# 普通请求代理到后端
+		location / {
+			proxy_pass http://192.168.70.110:5000;  # 替换为你的实际后端服务地址
+
+            proxy_set_header Host $host;  #正确传递域名信息
+			proxy_set_header X-Forwarded-Host $http_host;
+			proxy_set_header X-Real-IP $remote_addr;
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header X-Forwarded-Proto $scheme;
+
+			proxy_redirect off;
+			
+			# 文件上传相关配置
+			proxy_connect_timeout 300s;
+			proxy_send_timeout 300s;
+			proxy_read_timeout 300s;
+
+			add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
+			proxy_cookie_flags session_id samesite=lax secure;
+		}
+		# 文件上传大小限制
+		client_max_body_size 30M;
+		# 启用 gzip 压缩
+		gzip_types text/css text/scss text/plain text/xml application/xml application/json application/javascript;
+		gzip on;
+	}
 
 
 

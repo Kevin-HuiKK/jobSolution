@@ -42,13 +42,31 @@ def create_app(config_class=Config):
     # 配置日志
     if not os.path.exists('logs'):
         os.mkdir('logs')
-    file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=10)
+    
+    # 修改日志处理配置
+    file_handler = RotatingFileHandler(
+        'logs/app.log',
+        maxBytes=10240,
+        backupCount=10,
+        delay=True,  # 延迟创建文件，直到第一次写入
+        encoding='utf-8'  # 明确指定编码
+    )
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
     ))
-    file_handler.setLevel(logging.DEBUG)
+    file_handler.setLevel(logging.INFO)  # 将日志级别改为INFO，减少不必要的DEBUG信息
+    
+    # 添加控制台日志处理器
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s'
+    ))
+    console_handler.setLevel(logging.INFO)
+    
+    # 配置应用日志
     app.logger.addHandler(file_handler)
-    app.logger.setLevel(logging.DEBUG)
+    app.logger.addHandler(console_handler)
+    app.logger.setLevel(logging.INFO)
     app.logger.info('应用启动')
 
     db.init_app(app)

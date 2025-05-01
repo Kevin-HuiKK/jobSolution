@@ -8,7 +8,7 @@ msgstr ""
 msgid "Job Portal"
 msgstr "仓储招聘平台"
 
-msgid "Find Your Perfect Warehouse Job"
+msgid "Find Your Perfect Job"
 msgstr "找到理想的仓储工作"
 
 msgid "Easy Application Process"

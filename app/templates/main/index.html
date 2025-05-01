@@ -13,7 +13,7 @@
                             {% if session.get('language') == 'zh' %}
                                 找到理想的仓储工作
                             {% else %}
-                                Find Your Perfect Warehouse Job
+                                Find Your Perfect Job
                             {% endif %}
                         </h1>
                         
@@ -188,11 +188,108 @@
     </div>
 </div>
 
+<!-- 公司介绍部分 -->
+<div class="company-intro-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="company-intro-card">
+                    <h2 class="text-center mb-4">
+                        {% if session.get('language') == 'zh' %}
+                            关于我们
+                        {% else %}
+                            About Us
+                        {% endif %}
+                    </h2>
+                    <div class="company-description">
+                        {% if session.get('language') == 'zh' %}
+                            <p class="lead text-center mb-4">JESTUP AU PTY LTD 是一家专业的劳务派遣服务公司</p>
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="service-item">
+                                        <i class="fas fa-users service-icon"></i>
+                                        <h4>专业服务</h4>
+                                        <p>我们是一家提供专业员工服务的公司，拥有多年行业经验，始终致力于为合作企业提供优质可靠的劳务派遣服务。</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-item">
+                                        <i class="fas fa-tasks service-icon"></i>
+                                        <h4>服务范围</h4>
+                                        <p>我们提供多样化的工作岗位，包括普通工人、机器操作工、包装工、清洁工、叉车工等多个工种。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p class="lead text-center mb-4">JESTUP AU PTY LTD is a Professional Labour Supply Company</p>
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="service-item">
+                                        <i class="fas fa-users service-icon"></i>
+                                        <h4>Professional Services</h4>
+                                        <p>We are a professional staff service provider with years of industry experience, dedicated to providing quality and reliable labour supply services to our partner enterprises.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-item">
+                                        <i class="fas fa-tasks service-icon"></i>
+                                        <h4>Service Scope</h4>
+                                        <p>We offer diverse job positions, including general workers, machine operators, packers, cleaners, forklift operators, and more.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 合作企业展示区域 -->
+<div class="partners-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">
+            {% if session.get('language') == 'zh' %}
+                合作企业
+            {% else %}
+                Our Partners
+            {% endif %}
+        </h2>
+        <div class="row justify-content-center align-items-center g-4">
+            <div class="col-md-4 col-6">
+                <div class="partner-card text-center">
+                    <img src="{{ url_for('static', filename='img/sfplogo.png') }}" 
+                         alt="Select Fresh Providores" 
+                         class="img-fluid partner-logo">
+                    <h4 class="mt-3">Select Fresh Providores</h4>
+                </div>
+            </div>
+            <div class="col-md-4 col-6">
+                <div class="partner-card text-center">
+                    <img src="{{ url_for('static', filename='img/pmlogo.png') }}" 
+                         alt="PM Fresh" 
+                         class="img-fluid partner-logo">
+                    <h4 class="mt-3">PM Fresh</h4>
+                </div>
+            </div>
+            <div class="col-md-4 col-6">
+                <div class="partner-card text-center">
+                    <img src="{{ url_for('static', filename='img/sdlogo.png') }}" 
+                         alt="Sydney Direct Fresh" 
+                         class="img-fluid partner-logo">
+                    <h4 class="mt-3">Sydney Direct Fresh</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% block styles %}
 <style>
 .main-container {
     position: relative;
-    min-height: calc(100vh - 76px);
+    min-height: calc(100vh - 76px - 300px); /* 减去合作企业区域的高度 */
     background: url('/static/img/background.png') no-repeat center center fixed;
     background-size: cover;
     padding: 20px 0;
@@ -344,6 +441,84 @@
     margin-right: 0.25rem;
 }
 
+.partners-section {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-top: 1px solid #eee;
+}
+
+.partner-card {
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.partner-card:hover {
+    transform: translateY(-5px);
+}
+
+.partner-logo {
+    max-height: 80px;
+    width: auto;
+    object-fit: contain;
+}
+
+.company-intro-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.company-intro-card {
+    background: white;
+    border-radius: 16px;
+    padding: 3rem;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+}
+
+.company-intro-card h2 {
+    color: #1a73e8;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.company-description .lead {
+    color: #2c3e50;
+    font-size: 1.25rem;
+}
+
+.service-item {
+    text-align: center;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.service-icon {
+    font-size: 2.5rem;
+    color: #1a73e8;
+    margin-bottom: 1.5rem;
+}
+
+.service-item h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.service-item p {
+    color: #6c757d;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
 @media (max-width: 768px) {
     .main-container {
         padding: 10px 0;
@@ -401,6 +576,19 @@
     .col-lg-6 {
         padding-left: 10px;
         padding-right: 10px;
+    }
+    
+    .company-intro-card {
+        padding: 1.5rem;
+    }
+    
+    .service-item {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .company-description .lead {
+        font-size: 1.1rem;
     }
 }
 </style>
