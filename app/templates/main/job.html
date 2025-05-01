@@ -14,15 +14,31 @@
                     </h1>
                     <h6 class="card-subtitle mb-3 text-muted">{{ job.location }}</h6>
                     
-                    <div class="mb-4">
+                    <div class="job-details mb-4">
                         <h4>{{ _('Job Description') }}</h4>
-                        <p class="card-text">
+                        <div class="description-text">
                             {% if session.get('language') == 'zh' and job.description_zh %}
-                                {{ job.description_zh|nl2br }}
+                                {{ job.description_zh|nl2br|safe }}
                             {% else %}
-                                {{ job.description|nl2br }}
+                                {{ job.description|nl2br|safe }}
                             {% endif %}
-                        </p>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4>{{ _('Requirements') }}</h4>
+                            <div class="requirements-text">
+                                {% if session.get('language') == 'zh' and job.requirements_zh %}
+                                    {{ job.requirements_zh|nl2br|safe }}
+                                {% else %}
+                                    {{ job.requirements|nl2br|safe }}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4>{{ _('Salary Range') }}</h4>
+                            <p>{{ job.salary_range }}</p>
+                        </div>
                     </div>
 
                     {% if current_user.is_authenticated %}
@@ -52,4 +68,19 @@
             </div>
         </div>
     </div>
+
+<style>
+.job-details {
+    line-height: 1.6;
+}
+
+.description-text, .requirements-text {
+    white-space: pre-line;
+    margin-top: 1rem;
+}
+
+.description-text p, .requirements-text p {
+    margin-bottom: 1rem;
+}
+</style>
 {% endblock %} 

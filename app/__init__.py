@@ -21,7 +21,14 @@ moment = Moment()
 bootstrap = Bootstrap()
 
 def nl2br(value):
-    return value.replace('\n', '<br>') if value else ''
+    if not value:
+        return ''
+    # 首先替换已存在的<br>标签为换行符，避免重复
+    value = value.replace('<br>', '\n').replace('<br/>', '\n').replace('<br />', '\n')
+    # 然后将所有换行符替换为<br>标签
+    paragraphs = value.split('\n')
+    # 过滤掉空段落并在段落之间添加<br>标签
+    return '<br>'.join(p for p in paragraphs if p.strip())
 
 def get_locale():
     if 'language' not in session:
